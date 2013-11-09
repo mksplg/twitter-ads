@@ -1,8 +1,8 @@
 {
-  "name": "bootstrap",
+  "name": "twitter-ads",
   "private": true,
   "version": "0.0.1",
-  "description": "Empty express app with grunt coffe and requirejs",
+  "description": "Query local twitter data for interests",
   "main": "index.js",
   "devDependencies": {
     "grunt": "latest",
@@ -30,9 +30,12 @@
     "type": "git",
     "url": ""
   },
-  "author": "mikunu international",
+  "author": "WS2013 - AIC - Group 6.4",
   "contributors": [
     "Anca Cismasiu <anca.cismasiu@mikunu.com>",
+    "Daniel Kropshofer",
+    "Rusmir Topcic",
+    "Markus Plangg",
     "Christopher Glantschnig <christopher.glantschnig@mikunu.com>",
     "Simon Grabher <simon.grabher@mikunu.com>",
     "Thomas Fritz <thomas.fritz@mikunu.com>",
