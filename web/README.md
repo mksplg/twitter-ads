@@ -1,13 +1,21 @@
-bootstrap_coffeescript_requirejs_karma
-======================================
+= Twitter Ads
 
-A empty node express app which uses grunt als task manager. All code can be written in coffeescript using requirejs, mocha and karma testing.
+== Installation
 
-Global Modules:
-npm install -g grunt-cli
+1. Install node.js
+2. Install npm
 
-For Production:
-npm start -> will execute grunt production and then run index
+3. Install grunt
+    `npm install -g grunt-cli`
+3. Install local grunt
+    `npm install grunt`
+4. Build project
+    `npm install`
 
-For Development
-grunt -> will grunt test, grunt development and grunt watch
+=== Run for production
+	Execute grunt production and then run index
+    `npm start`
+
+=== Run for development
+	Will grunt test, grunt development and grunt watch
+    `grunt`
