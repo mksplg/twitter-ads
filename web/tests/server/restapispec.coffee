@@ -5,6 +5,7 @@ server = require '../../app'
 newRequest = request server
 
 describe 'Rest API', ->
+	###
 	it 'get request to wrong url should return 404', ->
 		newRequest.get('/ret').end (error,response) ->
 			expect(response.statusCode).to.equal 404
@@ -59,3 +60,4 @@ describe 'Rest API', ->
 			expect(response.body).to.a 'Object'
 			expect(response.body.result).to.include('pineapple')
 			expect(response.body.result).to.not.include('banana')
+	###

@@ -1,4 +1,4 @@
-items = ['apple', 'banana']
+items = ['User1', 'User2']
 
 exports.get = (id) ->
 	items[id]

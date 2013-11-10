@@ -1,22 +1,22 @@
 _ = require('lodash')
 ResponseObject = require('../libs/responseobject')
 ErrorObject = require('../libs/errorobject')
-fruits = require('../models/fruits')
+users = require('../models/users')
 
 
 
 ###*
-	** @api {get} /fruits/ Get all fruits
+	** @api {get} /users/ Get all users
 	* @apiVersion 0.0.1
 	* @apiName getAll
 	*
 	*
-	* @apiDescription Get all fruits
+	* @apiDescription Get all users
 	*
 	* @apiSuccess {Array}	result requested data
 	*
 	* @apiExample Example usage:
-	*		curl -X GET -H Content-Type: application/json"  http://localhost/fruits/
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -35,7 +35,7 @@ fruits = require('../models/fruits')
 	*     }
 ###
 exports.getAll = (request, response) ->
-	result = fruits.getAll()
+	result = users.getAll()
 	if _.isEmpty(result)
 		object = new ErrorObject('NoData')
 		response.statusCode = 400
@@ -44,17 +44,17 @@ exports.getAll = (request, response) ->
 	response.json object
 
 ###*
-	** @api {get} /fruits/:id Get fruit
+	** @api {get} /users/:id Get user
 	* @apiVersion 0.0.1
 	* @apiName get
 	*
-	* @apiDescription Get one fruit
+	* @apiDescription Get one user
 	*
-	* @apiParam {Number} id id of the fruit
+	* @apiParam {Number} id id of the user
 	*
 	* @apiSuccess {Array}	result	requested data
 	*	@apiExample Example usage:
-	*		curl -X GET -H Content-Type: application/json"  http://localhost/fruits/1
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/1
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -70,24 +70,24 @@ exports.get = (request, response) ->
 		object = new ErrorObject('NoValidId')
 		response.statusCode = 400
 		return response.json object
-	result = fruits.get(id)
+	result = users.get(id)
 	object = new ResponseObject(result)
 	response.json object
 
 
 ###*
-	** @api {post} /fruits/ Create fruit
+	** @api {post} /users/ Create user
 	* @apiVersion 0.0.1
 	* @apiName	post
 	*
-	* @apiDescription	Create one fruit
+	* @apiDescription	Create one user
 	*
-	* @apiParam	{String}	name name of the fruit
+	* @apiParam	{String}	name name of the user
 	*
-	* @apiSuccess	{Array}	result	created fruit
+	* @apiSuccess	{Array}	result	created user
 	*
 	* @apiExample Example usage:
-	*		curl -X POST -H "Content-Type: application/json" -d '{"name":"coconut"}' http://localhost/fruits/
+	*		curl -X POST -H "Content-Type: application/json" -d '{"name":"coconut"}' http://localhost/users/
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -103,27 +103,27 @@ exports.get = (request, response) ->
 	*     }
 ###
 exports.post = (request, response) ->
-	unless request.body.hasOwnProperty("fruit")
+	unless request.body.hasOwnProperty("user")
 		object = new ErrorObject('InvalidParamsName')
 		response.statusCode = 400
 		return response.json object
-	fruit = fruits.create(request.body.fruit)
-	object = new ResponseObject(fruit)
+	user = users.create(request.body.user)
+	object = new ResponseObject(user)
 	response.json object
 
 ###*
-	** @api {put} /fruits/:id Update fruit
+	** @api {put} /users/:id Update user
 	* @apiVersion 0.0.1
 	* @apiName put
 	*
-	* @apiDescription Update one fruit
+	* @apiDescription Update one user
 	*
-	* @apiParam {Number}	id	id of the fruit
-	* @apiParam {String}	name	name of the fruit
+	* @apiParam {Number}	id	id of the user
+	* @apiParam {String}	name	name of the user
 	*
-	* @apiSuccess {Array}	result	updated fruit
+	* @apiSuccess {Array}	result	updated user
 	* @apiExample Example usage:
-	*		curl -X PUT -H "Content-Type: application/json" -d '{"name":"pear"}' http://localhost/fruits/3
+	*		curl -X PUT -H "Content-Type: application/json" -d '{"name":"pear"}' http://localhost/users/3
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -137,7 +137,7 @@ exports.post = (request, response) ->
 ###
 exports.put = (request, response) ->
 	id = parseInt(request.params.id)
-	unless request.body.hasOwnProperty("fruit")
+	unless request.body.hasOwnProperty("user")
 		object = new ErrorObject('InvalidParamsName')
 		response.statusCode = 400
 		return response.json object
@@ -145,22 +145,22 @@ exports.put = (request, response) ->
 		object = new ErrorObject('InvalidParamsId')
 		response.statusCode = 400
 		return response.json object
-	fruits.update(id, request.body.fruit)
-	object = new ResponseObject(fruits.get(id))
+	users.update(id, request.body.user)
+	object = new ResponseObject(users.get(id))
 	response.json object
 
 ###*
-	** @api {delete} /fruits/:id Delete fruit
+	** @api {delete} /users/:id Delete user
 	* @apiVersion 0.0.1
 	* @apiName delete
 	*
-	* @apiDescription Delete one fruit
+	* @apiDescription Delete one user
 	*
-	* @apiParam {Number}	id id of the fruit
+	* @apiParam {Number}	id id of the user
 	*
-	* @apiSuccess {Array}	result deleted fruit
+	* @apiSuccess {Array}	result deleted user
 	*	@apiExample Example usage:
-	*		curl -X DELETE -H "Content-Type: application/json"  http://localhost/fruits/1
+	*		curl -X DELETE -H "Content-Type: application/json"  http://localhost/users/1
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -176,6 +176,6 @@ exports.delete = (request, response) ->
 		object = new ErrorObject('InvalidParamsId')
 		response.statusCode = 400
 		return response.json object
-	deletedFruit = fruits.delete(id)
-	object = new ResponseObject(deletedFruit)
+	deleteduser = users.delete(id)
+	object = new ResponseObject(deleteduser)
 	response.json object
