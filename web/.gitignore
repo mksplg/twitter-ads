@@ -19,3 +19,4 @@ node_modules/
 !Gruntfile.js
 !public/js/vendor/**/*.js
 !public/js/vendor/*.js
+!public/js/*.js
