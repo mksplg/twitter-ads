@@ -20,3 +20,5 @@ node_modules/
 !public/js/vendor/**/*.js
 !public/js/vendor/*.js
 !public/js/*.js
+public/js/main.js
+
