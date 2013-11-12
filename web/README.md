@@ -1,21 +1,22 @@
-= Twitter Ads
+# Twitter Ads
 
-== Installation
+## Installation
 
 1. Install node.js
+
 2. Install npm
 
 3. Install grunt
+
     `npm install -g grunt-cli`
-3. Install local grunt
+4. Install local grunt
+
     `npm install grunt`
-4. Build project
+5. Build project
+
     `npm install`
 
-=== Run for production
-	Execute grunt production and then run index
-    `npm start`
+### Runing
+`npm start` executes grunt production and then run index
 
-=== Run for development
-	Will grunt test, grunt development and grunt watch
-    `grunt`
+`grunt` runs grunt test, grunt development and grunt watch
