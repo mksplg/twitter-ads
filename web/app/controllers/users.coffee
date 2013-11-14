@@ -35,13 +35,14 @@ users = require('../models/users')
 	*     }
 ###
 exports.getAll = (request, response) ->
-	result = users.getAll()
-	if _.isEmpty(result)
-		object = new ErrorObject('NoData')
-		response.statusCode = 400
-		return response.json object
-	object = new ResponseObject(result)
-	response.json object
+	users.getAll (err, rows) ->
+		if err
+			object = new ErrorObject('NoData')
+			response.statusCode = 400
+			return response.json object
+		console.log(rows)
+		object = new ResponseObject(rows)
+		response.json object
 
 ###*
 	** @api {get} /users/:id Get user

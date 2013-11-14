@@ -4,6 +4,7 @@ Module dependencies.
 express = require("express")
 http = require("http")
 path = require("path")
+sqlite3 = require("sqlite3").verbose()
 
 fileloader = require("loadfiles")
 loadFilesFor = fileloader __dirname, 'js'
@@ -23,11 +24,21 @@ app.use express.static(path.join(__dirname, "../public"))
 app.use app.router
 
 # development only
-app.use express.errorHandler()  if "development" is app.get("env")
+app.use express.errorHandler() if "development" is app.get("env")
 
-
-# An Array with all Mongoose Model Objects
+# Models
 models = loadFilesFor('models')
+userdb = new sqlite3.Database(process.env.USERDB or ':memory:')
+
+for modelName of models
+	if models[modelName].setup
+		models[modelName].setup(userdb)
+
+models.users.create(
+	{
+		username: 'mksplg'
+		name: 'Markus Plangg'
+	})
 
 # Require all available controllers
 controllers = loadFilesFor('controllers')

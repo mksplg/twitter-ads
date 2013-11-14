@@ -7,12 +7,10 @@ module.exports = function(grunt) {
 				//Shared Options Hash
 			},
 			development: {
-				NODE_ENV: 'development',
-				PORT: 3000
+				NODE_ENV: 'development'
 			},
 			production: {
-				NODE_ENV: 'production',
-				PORT: 3000
+				NODE_ENV: 'production'
 			}
 		},
 		coffeelint: {
@@ -142,7 +140,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 
 	grunt.registerTask('test', ['env:development', 'coffeelint', 'coffee', 'mochaTest']);
-	grunt.registerTask('production', ['env:production','coffee','copy:development', 'requirejs', 'copy:production', 'concat:allLessFilesToOneMain', 'less:production']);
+	grunt.registerTask('production', ['env', 'coffee', 'copy:development', 'requirejs', 'copy:production', 'concat:allLessFilesToOneMain', 'less:production']);
 	grunt.registerTask('development', ['env:development', 'coffee', 'copy:development', 'concat:allLessFilesToOneMain', 'less:development']);
 	grunt.registerTask('default', ['test', 'development',  'watch', 'clean']);
 };
