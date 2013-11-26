@@ -51,6 +51,7 @@
     "lodash": "~2.2.1",
     "loadfiles": "latest",
     "request": "~2.27.0",
-    "sqlite3": "~2.1.19"
+    "sqlite3": "~2.1.19",
+    "orm": "*"
   }
 }

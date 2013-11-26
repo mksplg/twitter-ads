@@ -1,7 +1,6 @@
 _ = require('lodash')
 ResponseObject = require('../libs/responseobject')
 ErrorObject = require('../libs/errorobject')
-users = require('../models/users')
 
 
 
@@ -35,7 +34,7 @@ users = require('../models/users')
 	*     }
 ###
 exports.getAll = (request, response) ->
-	users.getAll (err, rows) ->
+	request.models.user.find (err, rows) ->
 		if err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
@@ -45,17 +44,17 @@ exports.getAll = (request, response) ->
 		response.json object
 
 ###*
-	** @api {get} /users/:id Get user
+	** @api {get} /users/:name Get user
 	* @apiVersion 0.0.1
 	* @apiName get
 	*
 	* @apiDescription Get one user
 	*
-	* @apiParam {Number} id id of the user
+	* @apiParam {String} name Screen name of the user
 	*
 	* @apiSuccess {Array}	result	requested data
 	*	@apiExample Example usage:
-	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/1
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/user
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -66,14 +65,15 @@ exports.getAll = (request, response) ->
 	* @apiError NoValidId The given ID is invalid
 ###
 exports.get = (request, response) ->
-	id = parseInt(request.params.id)
-	if _.isNaN(id)
-		object = new ErrorObject('NoValidId')
-		response.statusCode = 400
-		return response.json object
-	result = users.get(id)
-	object = new ResponseObject(result)
-	response.json object
+	console.log(request.params.name)
+	request.models.user.find {screen_name: request.params.name}, (err, rows) ->
+		if err
+			object = new ErrorObject('NoData')
+			response.statusCode = 400
+			return response.json object
+		console.log(rows)
+		object = new ResponseObject(rows)
+		response.json object
 
 
 ###*
@@ -103,14 +103,14 @@ exports.get = (request, response) ->
 	*       "error": "InvalidParamsName"
 	*     }
 ###
-exports.post = (request, response) ->
-	unless request.body.hasOwnProperty("user")
-		object = new ErrorObject('InvalidParamsName')
-		response.statusCode = 400
-		return response.json object
-	user = users.create(request.body.user)
-	object = new ResponseObject(user)
-	response.json object
+# exports.post = (request, response) ->
+# 	unless request.body.hasOwnProperty("user")
+# 		object = new ErrorObject('InvalidParamsName')
+# 		response.statusCode = 400
+# 		return response.json object
+# 	user = users.create(request.body.user)
+# 	object = new ResponseObject(user)
+# 	response.json object
 
 ###*
 	** @api {put} /users/:id Update user
@@ -136,19 +136,19 @@ exports.post = (request, response) ->
 	* @apiError InvalidParamsName The given name is invalid
 	* @apiError InvalidParamsId The given ID is invalid
 ###
-exports.put = (request, response) ->
-	id = parseInt(request.params.id)
-	unless request.body.hasOwnProperty("user")
-		object = new ErrorObject('InvalidParamsName')
-		response.statusCode = 400
-		return response.json object
-	if _.isNaN(id)
-		object = new ErrorObject('InvalidParamsId')
-		response.statusCode = 400
-		return response.json object
-	users.update(id, request.body.user)
-	object = new ResponseObject(users.get(id))
-	response.json object
+# exports.put = (request, response) ->
+# 	id = parseInt(request.params.id)
+# 	unless request.body.hasOwnProperty("user")
+# 		object = new ErrorObject('InvalidParamsName')
+# 		response.statusCode = 400
+# 		return response.json object
+# 	if _.isNaN(id)
+# 		object = new ErrorObject('InvalidParamsId')
+# 		response.statusCode = 400
+# 		return response.json object
+# 	users.update(id, request.body.user)
+# 	object = new ResponseObject(users.get(id))
+# 	response.json object
 
 ###*
 	** @api {delete} /users/:id Delete user
@@ -171,12 +171,12 @@ exports.put = (request, response) ->
 	*
 	* @apiError InvalidParamsId The given ID is invalid
 ###
-exports.delete = (request, response) ->
-	id = parseInt(request.params.id)
-	if _.isNaN(id)
-		object = new ErrorObject('InvalidParamsId')
-		response.statusCode = 400
-		return response.json object
-	deleteduser = users.delete(id)
-	object = new ResponseObject(deleteduser)
-	response.json object
+# exports.delete = (request, response) ->
+# 	id = parseInt(request.params.id)
+# 	if _.isNaN(id)
+# 		object = new ErrorObject('InvalidParamsId')
+# 		response.statusCode = 400
+# 		return response.json object
+# 	deleteduser = users.delete(id)
+# 	object = new ResponseObject(deleteduser)
+# 	response.json object
