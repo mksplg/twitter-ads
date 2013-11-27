@@ -29,7 +29,15 @@ angular.module('twitterAds.controllers', []).
       $scope.name = 'Error!'
     });
   }).
-  controller('MyCtrl2', function ($scope) {
-    // write Ctrl here
-
+  controller('UserCtrl', function ($scope, $http, $routeParams) {
+    $http({
+      method: 'GET',
+      url: '/rest/users/' + $routeParams.name
+    }).
+    success(function (data, status, headers, config) {
+      $scope.user = data.result;
+    }).
+    error(function (data, status, headers, config) {
+      $scope.name = 'Error!'
+    });
   });

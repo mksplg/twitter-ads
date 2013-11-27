@@ -15,6 +15,10 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/users',
       controller: 'UsersCtrl'
     }).
+    when('/users/:name', {
+      templateUrl: 'partials/user',
+      controller: 'UserCtrl'
+    }).
     otherwise({
       redirectTo: '/users'
     });
