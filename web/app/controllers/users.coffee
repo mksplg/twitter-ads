@@ -62,17 +62,16 @@ exports.getAll = (request, response) ->
 	*       "result": [{"id" : 1, "name": "apple"}]
 	*     }
 	*
-	* @apiError NoValidId The given ID is invalid
+	* @apiError NoData The given ID is invalid
 ###
 exports.get = (request, response) ->
-	console.log(request.params.name)
-	request.models.user.find {screen_name: request.params.name}, (err, rows) ->
+	request.models.user.find {screen_name: request.params.name}, (err, items) ->
 		if err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		console.log(rows)
-		object = new ResponseObject(rows)
+		console.log(items)
+		object = new ResponseObject(items)
 		response.json object
 
 
@@ -103,14 +102,19 @@ exports.get = (request, response) ->
 	*       "error": "InvalidParamsName"
 	*     }
 ###
-# exports.post = (request, response) ->
-# 	unless request.body.hasOwnProperty("user")
-# 		object = new ErrorObject('InvalidParamsName')
-# 		response.statusCode = 400
-# 		return response.json object
-# 	user = users.create(request.body.user)
-# 	object = new ResponseObject(user)
-# 	response.json object
+exports.post = (request, response) ->
+	unless request.body.hasOwnProperty("screen_name")
+		object = new ErrorObject('InvalidParamsName')
+		response.statusCode = 400
+		return response.json object
+
+	request.models.user.create request.body, (err, items) ->
+		if err
+			object = new ErrorObject('InvalidParams')
+			response.statusCode = 400
+			return response.json object
+		object = new ResponseObject(items)
+		response.json object
 
 ###*
 	** @api {put} /users/:id Update user
@@ -157,26 +161,24 @@ exports.get = (request, response) ->
 	*
 	* @apiDescription Delete one user
 	*
-	* @apiParam {Number}	id id of the user
+	* @apiParam {String}	name screen name of the user
 	*
-	* @apiSuccess {Array}	result deleted user
-	*	@apiExample Example usage:
-	*		curl -X DELETE -H "Content-Type: application/json"  http://localhost/users/1
+	* @apiSuccess {}	
+	* @apiExample Example usage:
+	*		curl -X DELETE -H "Content-Type: application/json" http://localhost/users/test
 	*
 	* @apiSuccessExample Success-Response:
-	*     HTTP/1.1 200 OK
-	*     {
-	*       "result": [{"id" : 1}]
-	*     }
+	*     HTTP/1.1 204 OK
 	*
-	* @apiError InvalidParamsId The given ID is invalid
+	* @apiError NoData The given ID is invalid
 ###
-# exports.delete = (request, response) ->
-# 	id = parseInt(request.params.id)
-# 	if _.isNaN(id)
-# 		object = new ErrorObject('InvalidParamsId')
-# 		response.statusCode = 400
-# 		return response.json object
-# 	deleteduser = users.delete(id)
-# 	object = new ResponseObject(deleteduser)
-# 	response.json object
+exports.delete = (request, response) ->
+	console.log 'DELETING'
+	request.models.user.find({screen_name: request.params.name}).remove (err) ->
+		if err
+			object = new ErrorObject('NoData')
+			response.statusCode = 400
+			return response.json object
+		object = new ResponseObject('NoData')
+		response.statusCode = 204
+		response.json object

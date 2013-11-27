@@ -1,6 +1,7 @@
+orm = require('orm')
+
 module.exports = (db, callback) ->
-	db.define("user",
-	{
+	db.define("user", {
 		id_str: String,
 		screen_name: String,
 		name: String,
@@ -12,6 +13,10 @@ module.exports = (db, callback) ->
 		statuses_count: Number,
 		friends_count: Number,
 		followers_count: Number
+	}, {
+		validations: {
+			screen_name: orm.validators.unique('screen_name not unique')
+		}
 	})
 
 	return callback()
