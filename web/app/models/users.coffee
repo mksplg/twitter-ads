@@ -5,14 +5,17 @@ module.exports = (db, callback) ->
 		id_str: String,
 		screen_name: String,
 		name: String,
-		profile_image_url: String,
+		description: String,
+		created_at: String,
 		location: String,
-		favourites_count: Number,
+		profile_image_url: String,
+		profile_image_url_https: String,
 		url: String,
-		lang: String,
+		listed_count: Number,
+		favourites_count: Number,
+		followers_count: Number,
 		statuses_count: Number,
-		friends_count: Number,
-		followers_count: Number
+		friends_count: Number
 	}, {
 		validations: {
 			screen_name: orm.validators.unique('screen_name not unique')
