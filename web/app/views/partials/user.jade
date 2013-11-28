@@ -1,2 +1,6 @@
 div(ng-controller='UserCtrl')
 	{{user}}
+	ul
+		li(ng-repeat='topic in topics')
+			{{topic.count}} - 
+			a(href="/topics/{{topic.topic}}") {{topic.topic}}

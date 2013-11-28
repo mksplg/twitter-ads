@@ -1,7 +1,7 @@
 _ = require('lodash')
 ResponseObject = require('../libs/responseobject')
 ErrorObject = require('../libs/errorobject')
-
+tweets = require('../models/tweets')
 
 
 ###*
@@ -39,7 +39,6 @@ exports.getAll = (request, response) ->
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		console.log(rows)
 		object = new ResponseObject(rows)
 		response.json object
 
@@ -70,10 +69,8 @@ exports.get = (request, response) ->
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		console.log(items)
 		object = new ResponseObject(items)
 		response.json object
-
 
 ###*
 	** @api {post} /users/ Create user
@@ -173,7 +170,6 @@ exports.post = (request, response) ->
 	* @apiError NoData The given ID is invalid
 ###
 exports.delete = (request, response) ->
-	console.log 'DELETING'
 	request.models.user.find({screen_name: request.params.name}).remove (err) ->
 		if err
 			object = new ErrorObject('NoData')
@@ -182,3 +178,40 @@ exports.delete = (request, response) ->
 		object = new ResponseObject('NoData')
 		response.statusCode = 204
 		response.json object
+
+
+###*
+	** @api {get} /users/:name/topics Get user
+	* @apiVersion 0.0.1
+	* @apiName get
+	*
+	* @apiDescription Get one user
+	*
+	* @apiParam {String} name Screen name of the user
+	*
+	* @apiSuccess {Array}	result	requested data
+	*	@apiExample Example usage:
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/user
+	*
+	* @apiSuccessExample Success-Response:
+	*     HTTP/1.1 200 OK
+	*     {
+	*       "result": [{"id" : 1, "name": "apple"}]
+	*     }
+	*
+	* @apiError NoData The given ID is invalid
+###
+exports.getTopics = (request, response) ->
+	request.models.user.find {screen_name: request.params.name}, (err, items) ->
+		if err
+			object = new ErrorObject('NoData')
+			response.statusCode = 400
+			return response.json object
+		_(items).each (item) ->
+			tweets.getTagsForUser item.screen_name, (err, results) ->
+				if err
+					object = new ErrorObject('NoData')
+					response.statusCode = 400
+					return response.json object
+				object = new ResponseObject(results)
+				response.json object

@@ -40,4 +40,27 @@ angular.module('twitterAds.controllers', []).
     error(function (data, status, headers, config) {
       $scope.name = 'Error!'
     });
+
+    $http({
+      method: 'GET',
+      url: '/rest/users/' + $routeParams.name + '/topics'
+    }).
+    success(function (data, status, headers, config) {
+      $scope.topics = data.result;
+    }).
+    error(function (data, status, headers, config) {
+      $scope.name = 'Error!'
+    });
+  }).
+  controller('TopicCtrl', function ($scope, $http, $routeParams) {
+    $http({
+      method: 'GET',
+      url: '/rest/topics/' + $routeParams.topic
+    }).
+    success(function (data, status, headers, config) {
+      $scope.topic = data.result;
+    }).
+    error(function (data, status, headers, config) {
+      $scope.name = 'Error!'
+    });
   });

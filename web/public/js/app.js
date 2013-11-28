@@ -19,6 +19,10 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/user',
       controller: 'UserCtrl'
     }).
+    when('/topics/:topic', {
+      templateUrl: 'partials/topic',
+      controller: 'TopicCtrl'
+    }).
     otherwise({
       redirectTo: '/users'
     });

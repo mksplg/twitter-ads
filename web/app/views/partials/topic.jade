@@ -1,0 +1,5 @@
+div(ng-controller='TopicCtrl')
+	ul
+		li(ng-repeat='user in topic.users')
+			{{user.count}} - 
+			a(href="/users/{{user.screen_name}}") {{user.screen_name}}
