@@ -1,5 +1,5 @@
 neo4j = require('neo4j')
-keys = require('../keys')
+keys = require('../../config')
 
 neodb = new neo4j.GraphDatabase(keys.neo4j_connection)
 

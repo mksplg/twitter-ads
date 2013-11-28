@@ -1,0 +1,8 @@
+exports.sql_opts = {
+	database : "test",
+	protocol : "mysql",
+	host     : "127.0.0.1",
+	user     : "root",
+	password : "" }
+
+exports.neo4j_connection = 'http://localhost:7474'

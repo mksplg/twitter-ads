@@ -6,7 +6,7 @@ http = require("http")
 path = require("path")
 sqlite3 = require("sqlite3").verbose()
 orm = require('orm')
-keys = require('./keys')
+keys = require('../config')
 
 sqlModels = require('./models/sqlmodels')
 
