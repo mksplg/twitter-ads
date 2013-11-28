@@ -22,3 +22,4 @@ node_modules/
 !public/js/*.js
 public/js/main.js
 
+*.DS_Store
