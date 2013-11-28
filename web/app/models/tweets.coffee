@@ -1,7 +1,7 @@
 neo4j = require('neo4j')
-keys = require('../../config')
+config = require('../../config/config')
 
-neodb = new neo4j.GraphDatabase(keys.neo4j_connection)
+neodb = new neo4j.GraphDatabase(config.neo4j_connection)
 
 module.exports.getUsersForTopic = (topic, callback) ->
 	query = """

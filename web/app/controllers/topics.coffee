@@ -2,6 +2,7 @@ _ = require('lodash')
 ResponseObject = require('../libs/responseobject')
 ErrorObject = require('../libs/errorobject')
 tweets = require('../models/tweets')
+ads = require('../models/ads')
 
 ###*
 	** @api {get} /topics/:topic Get user
@@ -34,3 +35,16 @@ exports.get = (request, response) ->
 		}
 		object = new ResponseObject(topic)
 		response.json object
+
+exports.getAds = (request, response) ->
+	topic = {
+		text: request.params.topic,
+		ads: []
+	}
+
+	ads.getAdsForTopic request.params.topic, (result) ->
+		topic.ads.push result
+	, () ->
+		object = new ResponseObject(topic)
+		response.json object
+	

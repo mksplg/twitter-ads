@@ -6,3 +6,8 @@ exports.sql_opts = {
 	password : "" }
 
 exports.neo4j_connection = 'http://localhost:7474'
+
+exports.mongo_opts = {
+	connection: "mongodb://localhost:27017/test",
+	collection: "ads"
+}

@@ -53,6 +53,7 @@
     "request": "~2.27.0",
     "orm": "*",
     "mysql" : "2.0.0-alpha7",
-    "neo4j": "*"
+    "neo4j": "*",
+    "mongodb": "1.3.x"
   }
 }

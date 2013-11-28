@@ -3,6 +3,7 @@
 // Declare app level module which depends on filters, and services
 
 angular.module('twitterAds', [
+  'ngSanitize',
   'twitterAds.controllers',
   'twitterAds.filters',
   'twitterAds.services',

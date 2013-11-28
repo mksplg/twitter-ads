@@ -7,6 +7,7 @@ routes = module.exports = (app, controllers, middleware) ->
 	app.get '/rest/users/:name/topics', controllers.users.getTopics
 
 	app.get '/rest/topics/:topic', controllers.topics.get
+	app.get '/rest/topics/:topic/ads', controllers.topics.getAds
 
 	app.get '/', (request, response) -> 
 		response.render 'index', {title: "Home", id: "home"}

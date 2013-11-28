@@ -15,7 +15,6 @@ angular.module('twitterAds.controllers', []).
     error(function (data, status, headers, config) {
       $scope.name = 'Error!'
     });
-
   }).
   controller('UsersCtrl', function ($scope, $http) {
     $http({
@@ -59,6 +58,17 @@ angular.module('twitterAds.controllers', []).
     }).
     success(function (data, status, headers, config) {
       $scope.topic = data.result;
+    }).
+    error(function (data, status, headers, config) {
+      $scope.name = 'Error!'
+    });
+
+    $http({
+      method: 'GET',
+      url: '/rest/topics/' + $routeParams.topic + '/ads'
+    }).
+    success(function (data, status, headers, config) {
+      $scope.ads = data.result.ads;
     }).
     error(function (data, status, headers, config) {
       $scope.name = 'Error!'

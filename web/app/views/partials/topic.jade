@@ -1,7 +1,11 @@
 div(ng-controller='TopicCtrl')
 	h1 {{topic.text}}
+	h2 Users
 	ul(class="list-group")
-		li(class="list-group-item", ng-repeat='user in topic.users')
+		li(class="list-group-item", ng-repeat="user in topic.users")
 			a(href="/users/{{user.screen_name}}") {{user.screen_name}}
 			span(class="badge")
 				{{user.count}}
+
+	h2 Ads
+	div(ng-repeat="ad in ads", ng-bind-html="ad.content")

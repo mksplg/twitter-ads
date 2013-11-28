@@ -76,7 +76,8 @@ module.exports = function(grunt) {
 			},
 			compile_config : {
 				files: {
-					'config/requirejs.js': 'config/requirejs.coffee'
+					'config/requirejs.js': 'config/requirejs.coffee',
+					'config/config.js': 'config/config.coffee'
 				}
 			},
 			compile_index : {
