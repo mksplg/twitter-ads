@@ -1,5 +1,7 @@
 neo4j = require('neo4j')
-neodb = new neo4j.GraphDatabase('http://localhost:7474')
+keys = require('../keys')
+
+neodb = new neo4j.GraphDatabase(keys.neo4j_connection)
 
 module.exports.getUsersForTopic = (topic, callback) ->
 	query = """

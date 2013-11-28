@@ -34,13 +34,12 @@ tweets = require('../models/tweets')
 	*     }
 ###
 exports.getAll = (request, response) ->
-	request.models.users.find (err, rows) ->
+	request.models.users.find 20, ['followers_count', 'Z'], (err, rows) ->
 		if err
 			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		console.log 'user found'
 		object = new ResponseObject(rows)
 		response.json object
 
@@ -68,6 +67,7 @@ exports.getAll = (request, response) ->
 exports.get = (request, response) ->
 	request.models.users.find {screen_name: request.params.name}, (err, items) ->
 		if err
+			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
@@ -109,6 +109,7 @@ exports.post = (request, response) ->
 
 	request.models.users.create request.body, (err, items) ->
 		if err
+			console.log err
 			object = new ErrorObject('InvalidParams')
 			response.statusCode = 400
 			return response.json object
@@ -174,6 +175,7 @@ exports.post = (request, response) ->
 exports.delete = (request, response) ->
 	request.models.users.find({screen_name: request.params.name}).remove (err) ->
 		if err
+			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
@@ -206,12 +208,15 @@ exports.delete = (request, response) ->
 exports.getTopics = (request, response) ->
 	request.models.users.find {screen_name: request.params.name}, (err, items) ->
 		if err
+			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
+		console.log items
 		_(items).each (item) ->
 			tweets.getTagsForUser item.screen_name, (err, results) ->
 				if err
+					console.log err
 					object = new ErrorObject('NoData')
 					response.statusCode = 400
 					return response.json object

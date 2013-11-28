@@ -51,8 +51,8 @@
     "lodash": "~2.2.1",
     "loadfiles": "latest",
     "request": "~2.27.0",
-    "sqlite3": "~2.1.19",
     "orm": "*",
+    "mysql" : "2.0.0-alpha7",
     "neo4j": "*"
   }
 }

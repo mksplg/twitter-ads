@@ -6,6 +6,7 @@ http = require("http")
 path = require("path")
 sqlite3 = require("sqlite3").verbose()
 orm = require('orm')
+keys = require('./keys')
 
 sqlModels = require('./models/sqlmodels')
 
@@ -24,7 +25,7 @@ app.use express.bodyParser()
 app.use express.methodOverride()
 app.use express.static(path.join(__dirname, "../public"))
 
-app.use(orm.express("sqlite:../data/users.sqlite", {
+app.use(orm.express(keys.sql_opts, {
 	define: sqlModels
 }));
 
