@@ -65,13 +65,13 @@ exports.getAll = (request, response) ->
 	* @apiError NoData The given ID is invalid
 ###
 exports.get = (request, response) ->
-	request.models.users.find {screen_name: request.params.name}, (err, items) ->
+	request.models.users.find {screen_name: request.params.name}, 1, (err, items) ->
 		if err
 			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		object = new ResponseObject(items)
+		object = new ResponseObject(items[0])
 		response.json object
 
 ###*

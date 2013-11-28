@@ -7,4 +7,9 @@ angular.module('twitterAds.filters', []).
     return function (text) {
       return String(text).replace(/\%VERSION\%/mg, version);
     }
+  }).
+  filter('profile_image_bigger', function() {
+    return function(text) {
+		return String(text).replace(/_normal\./, '_bigger.');
+    }
   });
