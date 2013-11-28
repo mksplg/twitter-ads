@@ -1,7 +1,7 @@
 orm = require('orm')
 
 module.exports = (db, callback) ->
-	db.define("user", {
+	db.define("users", {
 		id_str: String,
 		screen_name: String,
 		name: String,
@@ -10,6 +10,7 @@ module.exports = (db, callback) ->
 		location: String,
 		profile_image_url: String,
 		profile_image_url_https: String,
+		profile_text_color: String,
 		url: String,
 		listed_count: Number,
 		favourites_count: Number,
@@ -17,6 +18,7 @@ module.exports = (db, callback) ->
 		statuses_count: Number,
 		friends_count: Number
 	}, {
+		id: 'id_str',
 		validations: {
 			screen_name: orm.validators.unique('screen_name not unique')
 		}

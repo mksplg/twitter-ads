@@ -34,11 +34,13 @@ tweets = require('../models/tweets')
 	*     }
 ###
 exports.getAll = (request, response) ->
-	request.models.user.find (err, rows) ->
+	request.models.users.find (err, rows) ->
 		if err
+			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
+		console.log 'user found'
 		object = new ResponseObject(rows)
 		response.json object
 
@@ -64,7 +66,7 @@ exports.getAll = (request, response) ->
 	* @apiError NoData The given ID is invalid
 ###
 exports.get = (request, response) ->
-	request.models.user.find {screen_name: request.params.name}, (err, items) ->
+	request.models.users.find {screen_name: request.params.name}, (err, items) ->
 		if err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
@@ -105,7 +107,7 @@ exports.post = (request, response) ->
 		response.statusCode = 400
 		return response.json object
 
-	request.models.user.create request.body, (err, items) ->
+	request.models.users.create request.body, (err, items) ->
 		if err
 			object = new ErrorObject('InvalidParams')
 			response.statusCode = 400
@@ -170,7 +172,7 @@ exports.post = (request, response) ->
 	* @apiError NoData The given ID is invalid
 ###
 exports.delete = (request, response) ->
-	request.models.user.find({screen_name: request.params.name}).remove (err) ->
+	request.models.users.find({screen_name: request.params.name}).remove (err) ->
 		if err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
@@ -202,7 +204,7 @@ exports.delete = (request, response) ->
 	* @apiError NoData The given ID is invalid
 ###
 exports.getTopics = (request, response) ->
-	request.models.user.find {screen_name: request.params.name}, (err, items) ->
+	request.models.users.find {screen_name: request.params.name}, (err, items) ->
 		if err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400

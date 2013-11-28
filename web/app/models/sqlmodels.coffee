@@ -4,7 +4,7 @@ module.exports = (db, models) ->
 			console.log(err)
 	)
 
-	models.user = db.models.user
+	models.users = db.models.users
 
 	db.sync((err) ->
 		if err
