@@ -1,13 +1,16 @@
 div(ng-controller='UserCtrl')
-	div(style="float: left; min-height: 100px;")
-		img(src="{{user.profile_image_url | profile_image_bigger}}")
-	div
-		h1 {{user.screen_name}}
-		p small {{user.description}}
-	pre
-		{{user}}
+	div(style="height: 100px;")
+		div(style="float: left;")
+			img(src="{{user.profile_image_url | profile_image_bigger}}" style="margin-right: 5px;")
+		div
+			h1 {{user.screen_name}}
+			p {{user.description}}
+
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat='topic in topics')
 			a(href="/topics/{{topic.topic}}") {{topic.topic}}
 			span(class="badge")
 				{{topic.count}}
+
+	pre
+		{{user}}
