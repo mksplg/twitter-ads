@@ -1,5 +1,7 @@
 div(ng-controller='TopicCtrl')
-	ul
-		li(ng-repeat='user in topic.users')
-			{{user.count}} - 
+	h1 {{topic.text}}
+	ul(class="list-group")
+		li(class="list-group-item", ng-repeat='user in topic.users')
 			a(href="/users/{{user.screen_name}}") {{user.screen_name}}
+			span(class="badge")
+				{{user.count}}

@@ -28,6 +28,9 @@ exports.get = (request, response) ->
 	tweets.getUsersForTopic request.params.topic, (err, results) ->
 		if err
 			console.log err
-		topic = {users: results}
+		topic = {
+			text: request.params.topic,
+			users: results
+		}
 		object = new ResponseObject(topic)
 		response.json object
