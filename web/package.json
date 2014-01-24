@@ -33,13 +33,8 @@
   "author": "WS2013 - AIC - Group 6.4",
   "contributors": [
     "Anca Cismasiu <anca.cismasiu@mikunu.com>",
-    "Daniel Kropshofer",
-    "Rusmir Topcic",
-    "Markus Plangg",
-    "Christopher Glantschnig <christopher.glantschnig@mikunu.com>",
-    "Simon Grabher <simon.grabher@mikunu.com>",
-    "Thomas Fritz <thomas.fritz@mikunu.com>",
-    "Michael Hettegger <michael.hettegger@mikunu.com>"
+    "Daniel Kropshofer <kro@alpenjodel.de>",
+    "Markus Plangg" <mksplg@gmail.com>,
   ],
   "readmeFilename": "README.md",
   "dependencies": {

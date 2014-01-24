@@ -4,7 +4,6 @@ Module dependencies.
 express = require("express")
 http = require("http")
 path = require("path")
-sqlite3 = require("sqlite3").verbose()
 orm = require('orm')
 config = require('../config/config')
 

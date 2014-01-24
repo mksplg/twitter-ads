@@ -12,7 +12,7 @@
 4. Install local grunt
 
     `npm install grunt`
-5. Build project
+5. Install dependencies
 
     `npm install`
 
