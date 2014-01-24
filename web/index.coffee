@@ -4,4 +4,4 @@ app.use "/", require("./app")
 
 port = process.env.APP_PORT or 3000
 app.listen port, ->
-	console.log "Listening on https://localhost:" + port
+	console.log "Listening on http://localhost:" + port
