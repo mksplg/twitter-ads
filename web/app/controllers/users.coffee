@@ -214,7 +214,7 @@ exports.getTopics = (request, response) ->
 			return response.json object
 		console.log items
 		_(items).each (item) ->
-			tweets.getTagsForUser item.screen_name, (err, results) ->
+			tweets.getTagsForUser item.screen_name, request.query.limit, (err, results) ->
 				if err
 					console.log err
 					object = new ErrorObject('NoData')

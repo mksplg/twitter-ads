@@ -14,13 +14,13 @@ module.exports.getUsersForTopic = (topic, callback) ->
 
 	neodb.query(query, {topic: '.*' + topic + '.*'}, callback)
 
-module.exports.getTagsForUser = (screen_name, callback) ->
+module.exports.getTagsForUser = (screen_name, limit, callback) ->
 	query = """
 	START u=node(*)
 	MATCH (h)<-[:has_hashtag]-(t)<-[:tweets]-(u)
 	WHERE HAS (u.name) AND u.screen_name = {screen_name}
 	RETURN h.text as topic, count(*) as count
-	ORDER BY count DESCENDING;
+	ORDER BY count DESCENDING LIMIT {limit};
 	"""
 
-	neodb.query(query, {screen_name: screen_name}, callback)
+	neodb.query(query, {screen_name: screen_name, limit: parseInt(limit) || 3}, callback)
