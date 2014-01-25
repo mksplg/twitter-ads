@@ -7,7 +7,7 @@ angular.module('twitterAds.controllers', []).
 
     $http({
       method: 'GET',
-      url: '/rest/users'
+      url: '/api/users'
     }).
     success(function (data, status, headers, config) {
       $scope.users = data.result;
@@ -19,7 +19,7 @@ angular.module('twitterAds.controllers', []).
   controller('UsersCtrl', function ($scope, $http) {
     $http({
       method: 'GET',
-      url: '/rest/users'
+      url: '/api/users'
     }).
     success(function (data, status, headers, config) {
       $scope.users = data.result;
@@ -31,7 +31,7 @@ angular.module('twitterAds.controllers', []).
   controller('UserCtrl', function ($scope, $http, $routeParams) {
     $http({
       method: 'GET',
-      url: '/rest/users/' + $routeParams.name
+      url: '/api/user/' + $routeParams.name
     }).
     success(function (data, status, headers, config) {
       $scope.user = data.result;
@@ -42,7 +42,7 @@ angular.module('twitterAds.controllers', []).
 
     $http({
       method: 'GET',
-      url: '/rest/users/' + $routeParams.name + '/topics'
+      url: '/api/user/' + $routeParams.name + '/topics'
     }).
     success(function (data, status, headers, config) {
       $scope.topics = data.result;
@@ -54,7 +54,7 @@ angular.module('twitterAds.controllers', []).
   controller('TopicCtrl', function ($scope, $http, $routeParams) {
     $http({
       method: 'GET',
-      url: '/rest/topics/' + $routeParams.topic
+      url: '/api/topics/' + $routeParams.topic
     }).
     success(function (data, status, headers, config) {
       $scope.topic = data.result;
@@ -65,7 +65,7 @@ angular.module('twitterAds.controllers', []).
 
     $http({
       method: 'GET',
-      url: '/rest/topics/' + $routeParams.topic + '/ads'
+      url: '/api/topics/' + $routeParams.topic + '/ads'
     }).
     success(function (data, status, headers, config) {
       $scope.ads = data.result.ads;

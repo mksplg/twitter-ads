@@ -1,13 +1,14 @@
 routes = module.exports = (app, controllers, middleware) ->
-	app.get '/rest/users', controllers.users.getAll
-	app.get '/rest/users/:name', controllers.users.get
-	app.post '/rest/users', controllers.users.post
-	app.delete '/rest/users/:name', controllers.users.delete
+	app.get '/api/users', controllers.users.getAll
+	app.get '/api/users/influential', controllers.users.getInfluential
+	app.get '/api/user/:name', controllers.users.get
+	app.post '/api/users', controllers.users.post
+	app.delete '/api/user/:name', controllers.users.delete
 
-	app.get '/rest/users/:name/topics', controllers.users.getTopics
+	app.get '/api/user/:name/topics', controllers.users.getTopics
 
-	app.get '/rest/topics/:topic', controllers.topics.get
-	app.get '/rest/topics/:topic/ads', controllers.topics.getAds
+	app.get '/api/topic/:topic', controllers.topics.get
+	app.get '/api/topic/:topic/ads', controllers.topics.getAds
 
 	app.get '/', (request, response) -> 
 		response.render 'index', {title: "Home", id: "home"}

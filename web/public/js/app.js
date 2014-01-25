@@ -16,7 +16,7 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/users',
       controller: 'UsersCtrl'
     }).
-    when('/users/:name', {
+    when('/user/:name', {
       templateUrl: 'partials/user',
       controller: 'UserCtrl'
     }).

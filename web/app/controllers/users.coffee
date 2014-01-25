@@ -5,12 +5,12 @@ tweets = require('../models/tweets')
 
 
 ###*
-	** @api {get} /users/ Get all users
+	** @api {get} /api/users/ Get all users
 	* @apiVersion 0.0.1
 	* @apiName getAll
 	*
 	*
-	* @apiDescription Get all users
+	* @apiDescription /api/users Get all users
 	*
 	* @apiSuccess {Array}	result requested data
 	*
@@ -43,8 +43,54 @@ exports.getAll = (request, response) ->
 		object = new ResponseObject(rows)
 		response.json object
 
+
 ###*
-	** @api {get} /users/:name Get user
+	** @api {get} /api/users/influential Get all users, sorted by influence
+	* @apiVersion 0.0.1
+	* @apiName getInfluential
+	*
+	*
+	* @apiDescription Get all users, sorted by influence
+	*
+	* @apiSuccess {Array}	result requested data
+	*
+	* @apiExample Example usage:
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/
+	*
+	* @apiSuccessExample Success-Response:
+	*     HTTP/1.1 200 OK
+	*     {
+	*       result: [
+	*         {"id" : 1, "name":"apple"},
+	*         {"id" : 2, "name":"banana"}
+	*       ]
+	*     }
+	*
+	* @apiError NoData No data available
+	* @apiErrorExample Response (example):
+	*     HTTP/1.1 400 Bad Request
+	*     {
+	*       "error": "NoData"
+	*     }
+###
+exports.getInfluential = (request, response) ->
+	tweets.getInfluential request.query.skip, request.query.limit, (err, results) ->
+		if err
+			console.log err
+			object = new ErrorObject('NoData')
+			response.statusCode = 400
+			return response.json object
+		output = []
+		_(results).each (result) ->
+			userdata = {};
+			userdata.user = result.user._data.data
+			userdata.influenceFactor = result.influenceFactor
+			output.push userdata
+		object = new ResponseObject(output)
+		response.json object
+
+###*
+	** @api {get} /api/user/:name Get user
 	* @apiVersion 0.0.1
 	* @apiName get
 	*
@@ -54,7 +100,7 @@ exports.getAll = (request, response) ->
 	*
 	* @apiSuccess {Array}	result	requested data
 	*	@apiExample Example usage:
-	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/user
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/user/user
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -75,7 +121,7 @@ exports.get = (request, response) ->
 		response.json object
 
 ###*
-	** @api {post} /users/ Create user
+	** @api {post} /api/user/ Create user
 	* @apiVersion 0.0.1
 	* @apiName	post
 	*
@@ -86,7 +132,7 @@ exports.get = (request, response) ->
 	* @apiSuccess	{Array}	result	created user
 	*
 	* @apiExample Example usage:
-	*		curl -X POST -H "Content-Type: application/json" -d '{"name":"coconut"}' http://localhost/users/
+	*		curl -X POST -H "Content-Type: application/json" -d '{"name":"coconut"}' http://localhost/user/
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -117,7 +163,7 @@ exports.post = (request, response) ->
 		response.json object
 
 ###*
-	** @api {put} /users/:id Update user
+	** @api {put} /api/user/:id Update user
 	* @apiVersion 0.0.1
 	* @apiName put
 	*
@@ -128,7 +174,7 @@ exports.post = (request, response) ->
 	*
 	* @apiSuccess {Array}	result	updated user
 	* @apiExample Example usage:
-	*		curl -X PUT -H "Content-Type: application/json" -d '{"name":"pear"}' http://localhost/users/3
+	*		curl -X PUT -H "Content-Type: application/json" -d '{"name":"pear"}' http://localhost/user/3
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
@@ -155,7 +201,7 @@ exports.post = (request, response) ->
 # 	response.json object
 
 ###*
-	** @api {delete} /users/:id Delete user
+	** @api {delete} /api/user/:id Delete user
 	* @apiVersion 0.0.1
 	* @apiName delete
 	*
@@ -165,7 +211,7 @@ exports.post = (request, response) ->
 	*
 	* @apiSuccess {}	
 	* @apiExample Example usage:
-	*		curl -X DELETE -H "Content-Type: application/json" http://localhost/users/test
+	*		curl -X DELETE -H "Content-Type: application/json" http://localhost/user/test
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 204 OK
@@ -185,7 +231,7 @@ exports.delete = (request, response) ->
 
 
 ###*
-	** @api {get} /users/:name/topics Get user
+	** @api {get} /api/user/:name/topics Get user
 	* @apiVersion 0.0.1
 	* @apiName get
 	*
@@ -195,7 +241,7 @@ exports.delete = (request, response) ->
 	*
 	* @apiSuccess {Array}	result	requested data
 	*	@apiExample Example usage:
-	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/user
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/user/user
 	*
 	* @apiSuccessExample Success-Response:
 	*     HTTP/1.1 200 OK
