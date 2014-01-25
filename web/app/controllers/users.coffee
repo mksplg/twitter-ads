@@ -84,7 +84,9 @@ exports.getInfluential = (request, response) ->
 		_(results).each (result) ->
 			userdata = {};
 			userdata.user = result.user._data.data
-			userdata.influenceFactor = result.influenceFactor
+			userdata.user.tweets_retweet_count = result.tweets_retweet_count
+			userdata.user.tweets_favorite_count = result.tweets_favorite_count
+			userdata.influence_factor = result.influence_factor
 			output.push userdata
 		object = new ResponseObject(output)
 		response.json object

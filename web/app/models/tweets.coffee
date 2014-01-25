@@ -28,9 +28,10 @@ module.exports.getTagsForUser = (screen_name, limit, callback) ->
 module.exports.getInfluential = (skip, limit, callback) ->
 	query = """
 	MATCH (u:User)-[:tweets]->(t:Tweet)
-	WITH u as user, SUM(t.retweet_count) as retweetCount, SUM(t.favorite_count) as favoriteCount
-	RETURN user, retweetCount*0.4+favoriteCount*0.3+user.followers_count*0.2+user.listed_count*0.1 AS influenceFactor
-	ORDER BY influenceFactor DESC SKIP {skip} LIMIT {limit}
+	WITH u as user, SUM(t.retweet_count) as tweets_retweet_count, SUM(t.favorite_count) as tweets_favorite_count
+	RETURN user, tweets_retweet_count, tweets_favorite_count, 
+		tweets_retweet_count*0.4+tweets_favorite_count*0.3+user.followers_count*0.2+user.listed_count*0.1 AS influence_factor
+	ORDER BY influence_factor DESC SKIP {skip} LIMIT {limit}
 	"""
 
 	neodb.query(query, {skip: parseInt(skip) || 0, limit: parseInt(limit) || 20}, callback)
