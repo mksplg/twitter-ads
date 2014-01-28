@@ -1,6 +1,8 @@
 div(ng-controller='InfluentialCtrl')
 	h1 Influential Users
 
+	div(class="text-center")
+		pagination(total-items="totalItems" page="page" on-select-page="selectPage(page)" max-size="10")
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat='influentialUser in influentialUsers')
 			p

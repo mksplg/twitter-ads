@@ -25,6 +25,14 @@ module.exports.getTagsForUser = (screen_name, limit, callback) ->
 
 	neodb.query(query, {screen_name: screen_name, limit: parseInt(limit) || 5}, callback)
 
+module.exports.getUserCount = (callback) ->
+	query = """
+	MATCH (u:User)
+	RETURN COUNT(*) as user_count
+	"""
+
+	neodb.query(query, callback)
+
 module.exports.getInfluential = (skip, limit, callback) ->
 	query = """
 	MATCH (u:User)-[:tweets]->(t:Tweet)

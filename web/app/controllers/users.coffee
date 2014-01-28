@@ -80,16 +80,24 @@ exports.getInfluential = (request, response) ->
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		output = []
+		output = {}
+		output.users = []
 		_(results).each (result) ->
 			userdata = {};
 			userdata.user = result.user._data.data
 			userdata.tweets_retweet_mean = result.tweets_retweet_mean
 			userdata.tweets_favorite_mean = result.tweets_favorite_mean
 			userdata.influence_factor = result.influence_factor
-			output.push userdata
-		object = new ResponseObject(output)
-		response.json object
+			output.users.push userdata
+		tweets.getUserCount (err, results) ->
+			if err || results.length != 1
+				console.log err
+				object = new ErrorObject('NoData')
+				response.statusCode = 400
+				return response.json object
+			output.totalItems = results.pop().user_count
+			object = new ResponseObject(output)
+			response.json object
 
 
 ###*
