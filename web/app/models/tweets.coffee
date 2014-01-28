@@ -28,9 +28,14 @@ module.exports.getTagsForUser = (screen_name, limit, callback) ->
 module.exports.getInfluential = (skip, limit, callback) ->
 	query = """
 	MATCH (u:User)-[:tweets]->(t:Tweet)
-	WITH u as user, SUM(t.retweet_count) as tweets_retweet_count, SUM(t.favorite_count) as tweets_favorite_count
-	RETURN user, tweets_retweet_count, tweets_favorite_count, 
-		tweets_retweet_count*0.4+tweets_favorite_count*0.3+user.followers_count*0.2+user.listed_count*0.1 AS influence_factor
+	WHERE left(t.text, 4)<>'RT @'
+	WITH u, SUM(t.retweet_count)/COUNT(t) as tweets_retweet_count, SUM(t.favorite_count)/COUNT(t) as tweets_favorite_count
+	WITH MAX(tweets_retweet_count) as tweets_retweet_count_max, MAX(tweets_favorite_count) as tweets_favorite_count_max, MAX(u.followers_count) as followers_count_max, MAX(u.listed_count) as listed_count_max
+	MATCH (u:User)-[:tweets]->(t:Tweet)
+	WHERE left(t.text, 4)<>'RT @'
+	WITH u as user, SUM(t.retweet_count)/count(t) as tweets_retweet_count, SUM(t.favorite_count)/count(t) as tweets_favorite_count, tweets_retweet_count_max, tweets_favorite_count_max, followers_count_max, listed_count_max
+	RETURN user, tweets_retweet_count, tweets_favorite_count,
+	((0.4*tweets_retweet_count)/tweets_retweet_count_max + (0.3*tweets_favorite_count)/tweets_favorite_count_max + (0.2*user.followers_count)/followers_count_max + (0.1*user.listed_count)/listed_count_max) AS influence_factor
 	ORDER BY influence_factor DESC SKIP {skip} LIMIT {limit}
 	"""
 
