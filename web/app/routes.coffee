@@ -7,6 +7,7 @@ routes = module.exports = (app, controllers, middleware) ->
 	app.delete '/api/user/:name', controllers.users.delete
 
 	app.get '/api/user/:name/topics', controllers.users.getTopics
+	app.get '/api/user/:name/potentialtopics', controllers.users.getPotentialTopics
 
 	app.get '/api/topic/:topic', controllers.topics.get
 	app.get '/api/topic/:topic/ads', controllers.topics.getAds

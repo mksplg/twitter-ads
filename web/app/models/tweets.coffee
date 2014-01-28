@@ -14,16 +14,16 @@ module.exports.getUsersForTopic = (topic, callback) ->
 
 	neodb.query(query, {topic: '.*' + topic + '.*'}, callback)
 
-module.exports.getTagsForUser = (screen_name, limit, callback) ->
+module.exports.getTagsForUser = (screen_name, skip, limit, callback) ->
 	query = """
 	START u=node(*)
 	MATCH (h)<-[:has_hashtag]-(t)<-[:tweets]-(u)
 	WHERE HAS (u.name) AND u.screen_name = {screen_name}
 	RETURN h.text as topic, count(*) as count
-	ORDER BY count DESCENDING LIMIT {limit};
+	ORDER BY count DESCENDING SKIP {skip} LIMIT {limit};
 	"""
 
-	neodb.query(query, {screen_name: screen_name, limit: parseInt(limit) || 5}, callback)
+	neodb.query(query, {screen_name: screen_name, skip: parseInt(skip) || 0, limit: parseInt(limit) || 5}, callback)
 
 module.exports.getUserCount = (callback) ->
 	query = """
@@ -58,3 +58,17 @@ module.exports.getFocused = (skip, limit, callback) ->
 	"""
 
 	neodb.query(query, {skip: parseInt(skip) || 0, limit: parseInt(limit) || 20}, callback)
+
+module.exports.getPotentialTopics = (screen_name, depth, skip, limit, callback) ->
+	query = """
+	MATCH (o:User)-[:follows*1..3]->(f:User)-[:tweets]->(t:Tweet)-[:has_hashtag]->(h:Hashtag) 
+	WHERE o.screen_name={screen_name} AND NOT f.screen_name={screen_name} 
+	WITH f, COUNT(DISTINCT h) AS num_topics 
+	MATCH (o:User)-[:follows*1..3]->(f:User)-[:tweets]->(t:Tweet)-[:has_hashtag]->(h:Hashtag) 
+	WHERE o.screen_name={screen_name} AND NOT f.screen_name={screen_name} 
+	WITH f AS friend, num_topics, h AS topic, COUNT(h) AS num_per_topic 
+	RETURN friend.screen_name, topic.text, num_per_topic/1.0/num_topics AS num_per_topic_normalised 
+	ORDER BY num_per_topic_normalised DESC SKIP {skip} LIMIT {limit}
+	"""
+
+	neodb.query(query, {screen_name: screen_name, depth: parseInt(depth) || 3, skip: parseInt(skip) || 0, limit: parseInt(limit) || 20}, callback)

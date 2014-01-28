@@ -326,3 +326,42 @@ exports.getTopics = (request, response) ->
 					return response.json object
 				object = new ResponseObject(results)
 				response.json object
+
+###*
+	** @api {get} /api/user/:name/potentialtopics Get potential topics for user
+	* @apiVersion 0.0.1
+	* @apiName get
+	*
+	* @apiDescription Get potential topics for user
+	*
+	* @apiParam {String} name Screen name of the user
+	*
+	* @apiSuccess {Array}	result	requested data
+	*	@apiExample Example usage:
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/user/user
+	*
+	* @apiSuccessExample Success-Response:
+	*     HTTP/1.1 200 OK
+	*     {
+	*       "result": [{"id" : 1, "name": "apple"}]
+	*     }
+	*
+	* @apiError NoData The given ID is invalid
+###
+exports.getPotentialTopics = (request, response) ->
+	tweets.getPotentialTopics request.params.name, request.query.depth, request.query.skip, request.query.limit, (err, results) ->
+		if err
+			console.log err
+			object = new ErrorObject('NoData')
+			response.statusCode = 400
+			return response.json object
+		output = []
+		#_(results).each (result) ->
+		#	userdata = {};
+		#	userdata.user = result.user._data.data
+		#	userdata.num_topics = result.num_topics
+		#	userdata.sum_topic_usage = result.sum_topic_usage
+		#	userdata.focus_factor = result.focus_factor
+		#	output.push userdata
+		object = new ResponseObject(results)
+		response.json object
