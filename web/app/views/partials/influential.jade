@@ -1,8 +1,34 @@
 div(ng-controller='InfluentialCtrl')
 	h1 Influential Users
 
+	div(class="panel panel-primary")
+		div(class="panel-heading")
+			h3(class="panel-title") Weights
+
+		div(class="panel-body form-inline")
+			p
+				div(class="form-group")
+					label(for="retweetWeight") Retweet weight
+					input(id="retweetWeight" ng-model="filter.retweetWeight" placeholder="0.3" class="form-control" )
+				div(class="form-group")
+					label(for="favoritesWeight") Favorites weight
+					input(id="favoritesWeight" ng-model="filter.favoritesWeight" placeholder="0.3" class="form-control" )
+				div(class="form-group")
+					label(for="followersWeight") Followers weight
+					input(id="followersWeight" ng-model="filter.followersWeight" placeholder="0.3" class="form-control" )
+				div(class="form-group")
+					label(for="listedWeight") Listed weight
+					input(id="listedWeight" ng-model="filter.listedWeight" placeholder="0.1" class="form-control" )
+			p
+				<button type="button" class="btn btn-default" ng-click="calculate()">Calculate</button>
+				<button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
+
 	div(class="text-center")
-		pagination(total-items="totalItems" page="page" on-select-page="selectPage(page)" max-size="10")
+		span(ng-show="loading" class="label label-success") Loading..
+
+	div(class="text-center")
+		pagination(total-items="totalItems" page="page" on-select-page="selectPage(page)" max-size="10" num-pages="numPages" ng-show="numPages > 1" )
+
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat='influentialUser in influentialUsers')
 			p

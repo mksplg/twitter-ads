@@ -29,29 +29,43 @@ angular.module('twitterAds.controllers', []).
     });
   }).
   controller('InfluentialCtrl', function ($scope, $http) {
-    $scope.params = {};
+    $scope.filter = {};
 
     $scope.page = 1;
     $scope.totalItems = 0;
+    $scope.numPages = 0;
 
     $scope.fetchResult = function() {
+      $scope.loading = true;
+      var params = $scope.filter
       $http({
         method: 'GET',
         url: '/api/users/influential',
-        params: $scope.params
+        params: params
       }).
       success(function (data, status, headers, config) {
         $scope.influentialUsers = data.result.users;
         $scope.totalItems = data.result.totalItems;
+        $scope.loading = false;
       }).
       error(function (data, status, headers, config) {
         $scope.name = 'Error!'
+        $scope.loading = false;
       });
+    };
+
+    $scope.calculate = function() {
+      $scope.selectPage(1);
+    };
+
+    $scope.clear = function() {
+      $scope.filter = {};
+      $scope.selectPage(1);
     };
 
     $scope.selectPage = function (page) {
       $scope.page = page;
-      $scope.params.skip = 20 * ($scope.page - 1);
+      $scope.filter.skip = 20 * ($scope.page - 1);
       $scope.fetchResult();
     };
 
