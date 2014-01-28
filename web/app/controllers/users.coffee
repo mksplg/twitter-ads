@@ -84,9 +84,57 @@ exports.getInfluential = (request, response) ->
 		_(results).each (result) ->
 			userdata = {};
 			userdata.user = result.user._data.data
-			userdata.user.tweets_retweet_count = result.tweets_retweet_count
-			userdata.user.tweets_favorite_count = result.tweets_favorite_count
+			userdata.tweets_retweet_mean = result.tweets_retweet_mean
+			userdata.tweets_favorite_mean = result.tweets_favorite_mean
 			userdata.influence_factor = result.influence_factor
+			output.push userdata
+		object = new ResponseObject(output)
+		response.json object
+
+
+###*
+	** @api {get} /api/users/focused Get all users, sorted by focus
+	* @apiVersion 0.0.1
+	* @apiName getFocused
+	*
+	*
+	* @apiDescription Get all users, sorted by focus
+	*
+	* @apiSuccess {Array}	result requested data
+	*
+	* @apiExample Example usage:
+	*		curl -X GET -H Content-Type: application/json"  http://localhost/users/
+	*
+	* @apiSuccessExample Success-Response:
+	*     HTTP/1.1 200 OK
+	*     {
+	*       result: [
+	*         {"id" : 1, "name":"apple"},
+	*         {"id" : 2, "name":"banana"}
+	*       ]
+	*     }
+	*
+	* @apiError NoData No data available
+	* @apiErrorExample Response (example):
+	*     HTTP/1.1 400 Bad Request
+	*     {
+	*       "error": "NoData"
+	*     }
+###
+exports.getFocused = (request, response) ->
+	tweets.getFocused request.query.skip, request.query.limit, (err, results) ->
+		if err
+			console.log err
+			object = new ErrorObject('NoData')
+			response.statusCode = 400
+			return response.json object
+		output = []
+		_(results).each (result) ->
+			userdata = {};
+			userdata.user = result.user._data.data
+			userdata.num_topics = result.num_topics
+			userdata.sum_topic_usage = result.sum_topic_usage
+			userdata.focus_factor = result.focus_factor
 			output.push userdata
 		object = new ResponseObject(output)
 		response.json object

@@ -1,6 +1,7 @@
 routes = module.exports = (app, controllers, middleware) ->
 	app.get '/api/users', controllers.users.getAll
 	app.get '/api/users/influential', controllers.users.getInfluential
+	app.get '/api/users/focused', controllers.users.getFocused
 	app.get '/api/user/:name', controllers.users.get
 	app.post '/api/users', controllers.users.post
 	app.delete '/api/user/:name', controllers.users.delete

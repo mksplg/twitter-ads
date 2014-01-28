@@ -29,14 +29,24 @@ module.exports.getInfluential = (skip, limit, callback) ->
 	query = """
 	MATCH (u:User)-[:tweets]->(t:Tweet)
 	WHERE left(t.text, 4)<>'RT @'
-	WITH u, SUM(t.retweet_count)/COUNT(t) as tweets_retweet_count, SUM(t.favorite_count)/COUNT(t) as tweets_favorite_count
-	WITH MAX(tweets_retweet_count) as tweets_retweet_count_max, MAX(tweets_favorite_count) as tweets_favorite_count_max, MAX(u.followers_count) as followers_count_max, MAX(u.listed_count) as listed_count_max
+	WITH u, SUM(t.retweet_count)/COUNT(t) as tweets_retweet_mean, SUM(t.favorite_count)/COUNT(t) as tweets_favorite_mean
+	WITH MAX(tweets_retweet_mean) as tweets_retweet_mean_max, MAX(tweets_favorite_mean) as tweets_favorite_mean_max, MAX(u.followers_count) as followers_count_max, MAX(u.listed_count) as listed_count_max
 	MATCH (u:User)-[:tweets]->(t:Tweet)
 	WHERE left(t.text, 4)<>'RT @'
-	WITH u as user, SUM(t.retweet_count)/count(t) as tweets_retweet_count, SUM(t.favorite_count)/count(t) as tweets_favorite_count, tweets_retweet_count_max, tweets_favorite_count_max, followers_count_max, listed_count_max
-	RETURN user, tweets_retweet_count, tweets_favorite_count,
-	((0.4*tweets_retweet_count)/tweets_retweet_count_max + (0.3*tweets_favorite_count)/tweets_favorite_count_max + (0.2*user.followers_count)/followers_count_max + (0.1*user.listed_count)/listed_count_max) AS influence_factor
+	WITH u as user, SUM(t.retweet_count)/count(t) as tweets_retweet_mean, SUM(t.favorite_count)/count(t) as tweets_favorite_mean, tweets_retweet_mean_max, tweets_favorite_mean_max, followers_count_max, listed_count_max
+	RETURN user, tweets_retweet_mean, tweets_favorite_mean,
+	((0.4*tweets_retweet_mean)/tweets_retweet_mean_max + (0.3*tweets_favorite_mean)/tweets_favorite_mean_max + (0.2*user.followers_count)/followers_count_max + (0.1*user.listed_count)/listed_count_max) AS influence_factor
 	ORDER BY influence_factor DESC SKIP {skip} LIMIT {limit}
+	"""
+
+	neodb.query(query, {skip: parseInt(skip) || 0, limit: parseInt(limit) || 20}, callback)
+
+module.exports.getFocused = (skip, limit, callback) ->
+	query = """
+	MATCH (h:Hashtag)<-[:has_hashtag]-(t:Tweet)<-[:tweets]-(u:User)
+	WITH u AS user, COUNT(DISTINCT h) AS num_topics, COUNT(h) AS num_per_topic
+	RETURN user, num_topics, SUM(num_per_topic) AS sum_topic_usage, SUM(num_per_topic)*1.0/num_topics AS focus_factor
+	ORDER BY focus_factor DESC SKIP {skip} LIMIT {limit}
 	"""
 
 	neodb.query(query, {skip: parseInt(skip) || 0, limit: parseInt(limit) || 20}, callback)
