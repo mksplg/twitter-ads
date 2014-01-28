@@ -34,7 +34,19 @@ angular.module('twitterAds.controllers', []).
       url: '/api/users/influential'
     }).
     success(function (data, status, headers, config) {
-      $scope.influentials = data.result;
+      $scope.influentialUsers = data.result;
+    }).
+    error(function (data, status, headers, config) {
+      $scope.name = 'Error!'
+    });
+  }).
+  controller('FocusedUsersCtrl', function ($scope, $http) {
+    $http({
+      method: 'GET',
+      url: '/api/users/focused'
+    }).
+    success(function (data, status, headers, config) {
+      $scope.focusedUsers = data.result;
     }).
     error(function (data, status, headers, config) {
       $scope.name = 'Error!'

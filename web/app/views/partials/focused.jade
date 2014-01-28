@@ -1,0 +1,14 @@
+div(ng-controller='FocusedUsersCtrl')
+	h1 Focused Users
+
+	ul(class="list-group")
+		li(class="list-group-item", ng-repeat='focusedUser in focusedUsers')
+			p
+				h4
+					a(href="user/{{focusedUser.user.screen_name}}") {{focusedUser.user.screen_name}}
+					span(class="label label-success pull-right")
+						| {{focusedUser.focus_factor | number:6}}
+		
+				div(class="well well-sm")
+					| Number of Topics: {{focusedUser.num_topics}} |
+					| Total Usage of Topics: {{focusedUser.sum_topic_usage}}

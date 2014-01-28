@@ -20,6 +20,10 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/influential',
       controller: 'InfluentialCtrl'
     }).
+    when('/users/focused', {
+      templateUrl: 'partials/focused',
+      controller: 'FocusedUsersCtrl'
+    }).
     when('/user/:name', {
       templateUrl: 'partials/user',
       controller: 'UserCtrl'
