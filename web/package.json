@@ -1,7 +1,7 @@
 {
   "name": "twitter-ads",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.2",
   "description": "Query local twitter data for interests",
   "main": "index.js",
   "devDependencies": {
