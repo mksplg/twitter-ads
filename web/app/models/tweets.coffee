@@ -45,7 +45,7 @@ module.exports.getFocused = (skip, limit, callback) ->
 	query = """
 	MATCH (h:Hashtag)<-[:has_hashtag]-(t:Tweet)<-[:tweets]-(u:User)
 	WITH u AS user, COUNT(DISTINCT h) AS num_topics, COUNT(h) AS num_per_topic
-	RETURN user, num_topics, SUM(num_per_topic) AS sum_topic_usage, SUM(num_per_topic)*1.0/num_topics AS focus_factor
+	RETURN user, num_topics, SUM(num_per_topic) AS sum_topic_usage, 1.0-num_topics*1.0/SUM(num_per_topic) AS focus_factor
 	ORDER BY focus_factor DESC SKIP {skip} LIMIT {limit}
 	"""
 
