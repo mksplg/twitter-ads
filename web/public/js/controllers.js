@@ -28,6 +28,18 @@ angular.module('twitterAds.controllers', []).
       $scope.name = 'Error!'
     });
   }).
+  controller('InfluentialCtrl', function ($scope, $http) {
+    $http({
+      method: 'GET',
+      url: '/api/users/influential'
+    }).
+    success(function (data, status, headers, config) {
+      $scope.influentials = data.result;
+    }).
+    error(function (data, status, headers, config) {
+      $scope.name = 'Error!'
+    });
+  }).
   controller('UserCtrl', function ($scope, $http, $routeParams) {
     $http({
       method: 'GET',

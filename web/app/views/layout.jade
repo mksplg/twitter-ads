@@ -20,7 +20,7 @@ html(ng-app="twitterAds")
 						a.navbar-brand(href='#') Twitter Ads
 					.collapse.navbar-collapse
 						ul.nav.navbar-nav
-							- var obj = { 'users':'Users' }
+							- var obj = { 'users':'Users', '/users/influential':'Infuential' }
 								- each val, key in obj
 									- if (id == key)
 										li.active

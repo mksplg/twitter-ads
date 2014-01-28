@@ -16,6 +16,10 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/users',
       controller: 'UsersCtrl'
     }).
+    when('/users/influential', {
+      templateUrl: 'partials/influential',
+      controller: 'InfluentialCtrl'
+    }).
     when('/user/:name', {
       templateUrl: 'partials/user',
       controller: 'UserCtrl'

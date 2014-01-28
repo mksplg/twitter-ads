@@ -1,0 +1,16 @@
+div(ng-controller='InfluentialCtrl')
+	h1 Influential users
+
+	ul(class="list-group")
+		li(class="list-group-item", ng-repeat='influential in influentials')
+			p
+				h4
+					a(href="user/{{influential.user.screen_name}}") {{influential.user.screen_name}}
+					span(class="label label-success pull-right")
+						| {{influential.influence_factor | number:6}}
+		
+				div(class="well well-sm")
+					| Followers: {{influential.user.followers_count}} |
+					| Listed: {{influential.user.listed_count}} |
+					| Retweets per tweet: {{influential.tweets_retweet_mean}} |
+					| Favorites per tweet: {{influential.tweets_favorite_mean}}
