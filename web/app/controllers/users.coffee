@@ -2,6 +2,7 @@ _ = require('lodash')
 ResponseObject = require('../libs/responseobject')
 ErrorObject = require('../libs/errorobject')
 tweets = require('../models/tweets')
+orm = require('orm')
 
 
 ###*
@@ -34,14 +35,30 @@ tweets = require('../models/tweets')
 	*     }
 ###
 exports.getAll = (request, response) ->
-	request.models.users.find 20, ['followers_count', 'Z'], (err, rows) ->
+	conditions = {}
+	conditions.screen_name = orm.like('%' + request.query.screenName + '%') if request.query.screenName?
+
+	options = {}
+	options.offset = parseInt(request.query.skip) || 0
+
+	output = {}
+
+	request.models.users.find conditions, options, parseInt(request.query.limit) || 20, ['followers_count', 'Z'], (err, rows) ->
 		if err
 			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		object = new ResponseObject(rows)
-		response.json object
+		output.users = rows
+		request.models.users.count conditions, (err, rows) ->
+			if err
+				console.log err
+				object = new ErrorObject('NoData')
+				response.statusCode = 400
+				return response.json object
+			output.totalItems = rows
+			object = new ResponseObject(output)
+			response.json object
 
 
 ###*

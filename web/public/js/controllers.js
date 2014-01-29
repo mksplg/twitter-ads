@@ -1,7 +1,6 @@
 'use strict';
 
 /* Controllers */
-
 angular.module('twitterAds.controllers', []).
   controller('AppCtrl', function ($scope, $http) {
 
@@ -15,18 +14,52 @@ angular.module('twitterAds.controllers', []).
     error(function (data, status, headers, config) {
       $scope.name = 'Error!'
     });
+
   }).
   controller('UsersCtrl', function ($scope, $http) {
-    $http({
-      method: 'GET',
-      url: '/api/users'
-    }).
-    success(function (data, status, headers, config) {
-      $scope.users = data.result;
-    }).
-    error(function (data, status, headers, config) {
-      $scope.name = 'Error!'
-    });
+    $scope.filter = {};
+
+    $scope.page = 1;
+    $scope.totalItems = 0;
+    $scope.numPages = 0;
+
+    $scope.fetchResults = function() {
+      $scope.loading = true;
+      var params = $scope.filter
+      $http({
+        method: 'GET',
+        url: '/api/users',
+        params: params
+      }).
+      success(function (data, status, headers, config) {
+        $scope.users = data.result.users;
+        $scope.totalItems = data.result.totalItems;
+        $scope.loading = false;
+      }).
+      error(function (data, status, headers, config) {
+        $scope.name = 'Error!'
+        $scope.loading = false;
+      });
+    };
+
+    $scope.find = function() {
+      $scope.selectPage(1);
+    };
+
+    $scope.clear = function() {
+      $scope.filter = {};
+      $scope.selectPage(1);
+    };
+
+    $scope.selectPage = function (page) {
+      $scope.page = page;
+      $scope.filter.skip = 20 * ($scope.page - 1);
+      $scope.fetchResults();
+    };
+
+    $scope.selectPage(1);
+
+
   }).
   controller('InfluentialCtrl', function ($scope, $http) {
     $scope.filter = {};

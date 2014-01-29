@@ -1,9 +1,29 @@
 div(ng-controller='UsersCtrl')
 	h1 Users
+
+	div(class="form-inline")
+		p
+			div(class="form-group")
+				label(for="screen-name") Name
+				input(id="screen-name" ng-model="filter.screenName" class="form-control" )
+		p
+			<button type="button" class="btn btn-default" ng-click="find()">Find</button>
+			<button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
+
+	div(class="text-center")
+		pagination(total-items="totalItems" page="page" on-select-page="selectPage(page)" max-size="10" num-pages="numPages" ng-show="numPages > 1" )
+		div(ng-show="loading" class="loading")
+			div(class="label label-info") Loading..
+
+	div(ng-show="totalItems <= 0 && !loading" class="panel panel-default")
+		div(class="panel-body")	No users found
+
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat='user in users')
-			p
-				a(href="user/{{user.screen_name}}") {{user.screen_name}}
-			
-			pre
-				{{user}}
+			div(style="height: 100px;")
+				div(class="pull-left")
+					img(src="{{user.profile_image_url | profile_image_bigger}}" style="margin-right: 5px;")
+				div
+					h1
+						a(href="user/{{user.screen_name}}") {{user.screen_name}}
+					p {{user.description}}

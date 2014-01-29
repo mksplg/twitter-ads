@@ -1,36 +1,35 @@
 div(ng-controller='InfluentialCtrl')
 	h1 Influential Users
 
-	div(class="panel panel-primary")
-		div(class="panel-heading")
-			h3(class="panel-title") Weights
-
-		div(class="panel-body form-inline")
-			p
-				div(class="form-group")
-					label(for="retweetWeight") Retweet weight
-					input(id="retweetWeight" ng-model="filter.retweetWeight" placeholder="0.3" class="form-control" )
-				div(class="form-group")
-					label(for="favoritesWeight") Favorites weight
-					input(id="favoritesWeight" ng-model="filter.favoritesWeight" placeholder="0.3" class="form-control" )
-				div(class="form-group")
-					label(for="followersWeight") Followers weight
-					input(id="followersWeight" ng-model="filter.followersWeight" placeholder="0.3" class="form-control" )
-				div(class="form-group")
-					label(for="listedWeight") Listed weight
-					input(id="listedWeight" ng-model="filter.listedWeight" placeholder="0.1" class="form-control" )
-			p
-				<button type="button" class="btn btn-default" ng-click="calculate()">Calculate</button>
-				<button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
+	div(class="form-inline")
+		p
+			div(class="form-group")
+				label(for="retweetWeight") Retweet weight
+				input(id="retweetWeight" ng-model="filter.retweetWeight" placeholder="0.3" class="form-control" )
+			div(class="form-group")
+				label(for="favoritesWeight") Favorites weight
+				input(id="favoritesWeight" ng-model="filter.favoritesWeight" placeholder="0.3" class="form-control" )
+			div(class="form-group")
+				label(for="followersWeight") Followers weight
+				input(id="followersWeight" ng-model="filter.followersWeight" placeholder="0.3" class="form-control" )
+			div(class="form-group")
+				label(for="listedWeight") Listed weight
+				input(id="listedWeight" ng-model="filter.listedWeight" placeholder="0.1" class="form-control" )
+		p
+			<button type="button" class="btn btn-default" ng-click="calculate()">Calculate</button>
+			<button type="button" class="btn btn-default" ng-click="clear()">Clear</button>
 
 	div(class="text-center")
 		div(class="sort-order pull-left" ng-show="totalItems > 0" ng-click="setSortOrder('DESC')")
-				i(class="glyphicon glyphicon-sort-by-attributes" ng-class="{active: filter.sortOrder=='DESC', disabled: filter.sortOrder=='ASC'}")	
+				i(class="glyphicon glyphicon-sort-by-attributes-alt" ng-class="{active: filter.sortOrder=='DESC', disabled: filter.sortOrder=='ASC'}")	
 		div(class="sort-order pull-left" ng-show="totalItems > 0" ng-click="setSortOrder('ASC')")
-				i(class="glyphicon glyphicon-sort-by-attributes-alt" ng-class="{active: filter.sortOrder=='ASC', disabled: filter.sortOrder=='DESC'}")	
+				i(class="glyphicon glyphicon-sort-by-attributes" ng-class="{active: filter.sortOrder=='ASC', disabled: filter.sortOrder=='DESC'}")	
 		pagination(total-items="totalItems" page="page" on-select-page="selectPage(page)" max-size="10" num-pages="numPages" ng-show="numPages > 1" )
 		div(ng-show="loading" class="loading")
 			div(class="label label-info") Loading..
+
+	div(ng-show="totalItems <= 0 && !loading" class="panel panel-default")
+		div(class="panel-body")	No users found
 
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat='influentialUser in influentialUsers')
