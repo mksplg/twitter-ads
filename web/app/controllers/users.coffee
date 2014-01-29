@@ -336,22 +336,14 @@ exports.delete = (request, response) ->
 	* @apiError NoData The given ID is invalid
 ###
 exports.getTopics = (request, response) ->
-	request.models.users.find {screen_name: request.params.name}, (err, items) ->
+	tweets.getTopics request.params.name, request.query.skip, request.query.limit, (err, results) ->
 		if err
 			console.log err
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		console.log items
-		_(items).each (item) ->
-			tweets.getTagsForUser item.screen_name, request.query.limit, (err, results) ->
-				if err
-					console.log err
-					object = new ErrorObject('NoData')
-					response.statusCode = 400
-					return response.json object
-				object = new ResponseObject(results)
-				response.json object
+		object = new ResponseObject(results)
+		response.json object
 
 ###*
 	** @api {get} /api/user/:name/potentialtopics Get potential topics for user

@@ -14,7 +14,7 @@ module.exports.getUsersForTopic = (topic, callback) ->
 
 	neodb.query(query, {topic: '.*' + topic + '.*'}, callback)
 
-module.exports.getTagsForUser = (screen_name, skip, limit, callback) ->
+module.exports.getTopics = (screen_name, skip, limit, callback) ->
 	query = """
 	START u=node(*)
 	MATCH (h)<-[:has_hashtag]-(t)<-[:tweets]-(u)
