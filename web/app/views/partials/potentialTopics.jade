@@ -11,5 +11,6 @@ div(ng-controller='PotentialTopicsCtrl')
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat='topic in topics')
 			a(href="/topics/{{topic.topic}}") {{topic.topic}}
+			|   from @{{topic.friend_screen_name}}
 			span(class="badge")
-				{{topic.count}}
+				{{topic.num_per_topic_normalised | number:2}}

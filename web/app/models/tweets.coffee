@@ -72,8 +72,8 @@ module.exports.getPotentialTopics = (screen_name, depth, skip, limit, callback) 
 	MATCH (o:User)-[:follows*1..3]->(f:User)-[:tweets]->(t:Tweet)-[:has_hashtag]->(h:Hashtag) 
 	WHERE o.screen_name={screen_name} AND NOT f.screen_name={screen_name} 
 	WITH f AS friend, num_topics, h AS topic, COUNT(h) AS num_per_topic 
-	RETURN friend.screen_name, topic.text, num_per_topic/1.0/num_topics AS num_per_topic_normalised 
+	RETURN friend.screen_name as friend_screen_name, topic.text as topic, num_per_topic/1.0/num_topics AS num_per_topic_normalised 
 	ORDER BY num_per_topic_normalised DESC SKIP {skip} LIMIT {limit}
 	"""
 
-	neodb.query(query, {screen_name: screen_name, depth: parseInt(depth) || 3, skip: parseInt(skip) || 0, limit: parseInt(limit) || 20}, callback)
+	neodb.query(query, {screen_name: screen_name, depth: parseInt(depth) || 3, skip: parseInt(skip) || 0, limit: parseInt(limit) || 5}, callback)
