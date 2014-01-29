@@ -12,5 +12,28 @@ div(ng-controller='UserCtrl')
 			span(class="badge")
 				{{topic.count}}
 
-	pre
-		{{user}}
+	table(class="table")
+		colgroup
+			col(class="col-xs-1")
+			col(class="col-xs-7")
+		tr
+			td Name
+			td {{user.name}}
+		tr
+			td Location
+			td {{user.location}}
+		tr
+			td Tweets
+			td {{user.statuses_count}}
+		tr
+			td Friends
+			td {{user.friends_count}}
+		tr
+			td Followers
+			td {{user.followers_count}}
+		tr
+			td Listed
+			td {{user.listed_count}}
+		tr
+			td Favorites
+			td {{user.favourites_count}}
