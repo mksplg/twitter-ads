@@ -33,7 +33,7 @@ module.exports.getUserCount = (callback) ->
 
 	neodb.query(query, callback)
 
-module.exports.getInfluential = (skip, limit, retweetWeight, favoritesWeight, followersWeight, listedWeight, callback) ->
+module.exports.getInfluential = (sortOrder, skip, limit, retweetWeight, favoritesWeight, followersWeight, listedWeight, callback) ->
 	query = """
 	MATCH (u:User)-[:tweets]->(t:Tweet)
 	WHERE left(t.text, 4)<>'RT @'
@@ -44,18 +44,24 @@ module.exports.getInfluential = (skip, limit, retweetWeight, favoritesWeight, fo
 	WITH u as user, SUM(t.retweet_count)/count(t) as tweets_retweet_mean, SUM(t.favorite_count)/count(t) as tweets_favorite_mean, tweets_retweet_mean_max, tweets_favorite_mean_max, followers_count_max, listed_count_max
 	RETURN user, tweets_retweet_mean, tweets_favorite_mean,
 	(({retweet_weight}*tweets_retweet_mean)/tweets_retweet_mean_max + ({favorites_weight}*tweets_favorite_mean)/tweets_favorite_mean_max + ({followers_weight}*user.followers_count)/followers_count_max + ({listed_weight}*user.listed_count)/listed_count_max) AS influence_factor
-	ORDER BY influence_factor DESC SKIP {skip} LIMIT {limit}
+	ORDER BY influence_factor
 	"""
+
+	query += ' DESC' unless sortOrder == 'ASC' 
+	query += ' SKIP {skip} LIMIT {limit}'
 
 	neodb.query(query, {skip: parseInt(skip) || 0, limit: parseInt(limit) || 20, retweet_weight: parseFloat(retweetWeight) || 0.3, favorites_weight: parseFloat(favoritesWeight) || 0.3, followers_weight: parseFloat(followersWeight) || 0.3, listed_weight: parseFloat(listedWeight) || 0.3}, callback)
 
-module.exports.getFocused = (skip, limit, callback) ->
+module.exports.getFocused = (sortOrder, skip, limit, callback) ->
 	query = """
 	MATCH (h:Hashtag)<-[:has_hashtag]-(t:Tweet)<-[:tweets]-(u:User)
 	WITH u AS user, COUNT(DISTINCT h) AS num_topics, COUNT(h) AS num_per_topic
 	RETURN user, num_topics, SUM(num_per_topic) AS sum_topic_usage, 1.0-num_topics*1.0/SUM(num_per_topic) AS focus_factor
-	ORDER BY focus_factor DESC SKIP {skip} LIMIT {limit}
+	ORDER BY focus_factor
 	"""
+
+	query += ' DESC' unless sortOrder == 'ASC' 
+	query += ' SKIP {skip} LIMIT {limit}'
 
 	neodb.query(query, {skip: parseInt(skip) || 0, limit: parseInt(limit) || 20}, callback)
 

@@ -74,7 +74,7 @@ exports.getAll = (request, response) ->
 	*     }
 ###
 exports.getInfluential = (request, response) ->
-	tweets.getInfluential request.query.skip, request.query.limit, request.query.retweetWeight, request.query.favoritesWeight, request.query.followersWeight, request.query.listedWeight, (err, results) ->
+	tweets.getInfluential request.query.sortOrder, request.query.skip, request.query.limit, request.query.retweetWeight, request.query.favoritesWeight, request.query.followersWeight, request.query.listedWeight, (err, results) ->
 		if err
 			console.log err
 			object = new ErrorObject('NoData')
@@ -130,7 +130,7 @@ exports.getInfluential = (request, response) ->
 	*     }
 ###
 exports.getFocused = (request, response) ->
-	tweets.getFocused request.query.skip, request.query.limit, (err, results) ->
+	tweets.getFocused request.query.sortOrder, request.query.skip, request.query.limit, (err, results) ->
 		if err
 			console.log err
 			object = new ErrorObject('NoData')

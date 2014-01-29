@@ -30,6 +30,7 @@ angular.module('twitterAds.controllers', []).
   }).
   controller('InfluentialCtrl', function ($scope, $http) {
     $scope.filter = {};
+    $scope.filter.sortOrder = "DESC";
 
     $scope.page = 1;
     $scope.totalItems = 0;
@@ -69,10 +70,16 @@ angular.module('twitterAds.controllers', []).
       $scope.fetchResults();
     };
 
+    $scope.setSortOrder = function (sortOrder) {
+      $scope.filter.sortOrder = sortOrder;
+      $scope.selectPage(1);
+    };
+
     $scope.selectPage(1);
   }).
   controller('FocusedUsersCtrl', function ($scope, $http) {
     $scope.filter = {};
+    $scope.filter.sortOrder = "DESC";
 
     $scope.page = 1;
     $scope.totalItems = 0;
@@ -101,6 +108,11 @@ angular.module('twitterAds.controllers', []).
       $scope.page = page;
       $scope.filter.skip = 20 * ($scope.page - 1);
       $scope.fetchResults();
+    };
+
+    $scope.setSortOrder = function (sortOrder) {
+      $scope.filter.sortOrder = sortOrder;
+      $scope.selectPage(1);
     };
 
     $scope.selectPage(1);
