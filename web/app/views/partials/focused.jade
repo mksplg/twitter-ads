@@ -1,6 +1,12 @@
 div(ng-controller='FocusedUsersCtrl')
 	h1 Focused Users
 
+	div(class="text-center")
+		span(ng-show="loading" class="label label-success") Loading..
+
+	div(class="text-center")
+		pagination(total-items="totalItems" page="page" on-select-page="selectPage(page)" max-size="10" num-pages="numPages" ng-show="numPages > 1" )
+
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat='focusedUser in focusedUsers')
 			p

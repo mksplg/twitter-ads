@@ -35,7 +35,7 @@ angular.module('twitterAds.controllers', []).
     $scope.totalItems = 0;
     $scope.numPages = 0;
 
-    $scope.fetchResult = function() {
+    $scope.fetchResults = function() {
       $scope.loading = true;
       var params = $scope.filter
       $http({
@@ -66,22 +66,44 @@ angular.module('twitterAds.controllers', []).
     $scope.selectPage = function (page) {
       $scope.page = page;
       $scope.filter.skip = 20 * ($scope.page - 1);
-      $scope.fetchResult();
+      $scope.fetchResults();
     };
 
     $scope.selectPage(1);
   }).
   controller('FocusedUsersCtrl', function ($scope, $http) {
-    $http({
-      method: 'GET',
-      url: '/api/users/focused'
-    }).
-    success(function (data, status, headers, config) {
-      $scope.focusedUsers = data.result;
-    }).
-    error(function (data, status, headers, config) {
-      $scope.name = 'Error!'
-    });
+    $scope.filter = {};
+
+    $scope.page = 1;
+    $scope.totalItems = 0;
+    $scope.numPages = 0;
+
+    $scope.fetchResults = function() {
+      $scope.loading = true;
+      var params = $scope.filter
+      $http({
+        method: 'GET',
+        url: '/api/users/focused',
+        params: params
+      }).
+      success(function (data, status, headers, config) {
+        $scope.focusedUsers = data.result.users;
+        $scope.totalItems = data.result.totalItems;
+        $scope.loading = false;
+      }).
+      error(function (data, status, headers, config) {
+        $scope.name = 'Error!'
+        $scope.loading = false;
+      });
+    };
+
+    $scope.selectPage = function (page) {
+      $scope.page = page;
+      $scope.filter.skip = 20 * ($scope.page - 1);
+      $scope.fetchResults();
+    };
+
+    $scope.selectPage(1);
   }).
   controller('UserCtrl', function ($scope, $http, $routeParams) {
     $http({

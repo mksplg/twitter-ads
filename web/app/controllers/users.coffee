@@ -136,16 +136,25 @@ exports.getFocused = (request, response) ->
 			object = new ErrorObject('NoData')
 			response.statusCode = 400
 			return response.json object
-		output = []
+		output = {}
+		output.users = []
 		_(results).each (result) ->
 			userdata = {};
 			userdata.user = result.user._data.data
 			userdata.num_topics = result.num_topics
 			userdata.sum_topic_usage = result.sum_topic_usage
 			userdata.focus_factor = result.focus_factor
-			output.push userdata
-		object = new ResponseObject(output)
-		response.json object
+			output.users.push userdata
+
+		tweets.getUserCount (err, results) ->
+			if err || results.length != 1
+				console.log err
+				object = new ErrorObject('NoData')
+				response.statusCode = 400
+				return response.json object
+			output.totalItems = results.pop().user_count
+			object = new ResponseObject(output)
+			response.json object
 
 ###*
 	** @api {get} /api/user/:name Get user
