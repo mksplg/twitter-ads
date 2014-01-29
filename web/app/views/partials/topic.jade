@@ -7,7 +7,7 @@ div(ng-controller='TopicCtrl')
 			div(class="label label-info") Loading..
 	ul(class="list-group")
 		li(class="list-group-item", ng-repeat="user in topic.users")
-			a(href="/users/{{user.screen_name}}") {{user.screen_name}}
+			a(href="/user/{{user.screen_name}}") {{user.screen_name}}
 			span(class="badge")
 				{{user.count}}
 
