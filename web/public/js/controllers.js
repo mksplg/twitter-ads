@@ -38,6 +38,7 @@ angular.module('twitterAds.controllers', []).
       }).
       error(function (data, status, headers, config) {
         $scope.name = 'Error!'
+        $scope.totalItems = 0;
         $scope.loading = false;
       });
     };
@@ -84,6 +85,7 @@ angular.module('twitterAds.controllers', []).
       }).
       error(function (data, status, headers, config) {
         $scope.name = 'Error!'
+        $scope.totalItems = 0;
         $scope.loading = false;
       });
     };
@@ -133,6 +135,7 @@ angular.module('twitterAds.controllers', []).
       }).
       error(function (data, status, headers, config) {
         $scope.name = 'Error!'
+        $scope.totalItems = 0;
         $scope.loading = false;
       });
     };
@@ -173,26 +176,81 @@ angular.module('twitterAds.controllers', []).
       $scope.name = 'Error!'
     });
   }).
-  controller('TopicCtrl', function ($scope, $http, $routeParams) {
-    $http({
-      method: 'GET',
-      url: '/api/topics/' + $routeParams.topic
-    }).
-    success(function (data, status, headers, config) {
-      $scope.topic = data.result;
-    }).
-    error(function (data, status, headers, config) {
-      $scope.name = 'Error!'
-    });
+  controller('TopicsCtrl', function ($scope, $http, $routeParams) {
+    $scope.totalItems = 0;
 
-    $http({
-      method: 'GET',
-      url: '/api/topics/' + $routeParams.topic + '/ads'
-    }).
-    success(function (data, status, headers, config) {
-      $scope.ads = data.result.ads;
-    }).
-    error(function (data, status, headers, config) {
-      $scope.name = 'Error!'
-    });
+    $scope.fetchResults = function() {
+      $scope.loading = true;
+      $http({
+        method: 'GET',
+        url: '/api/user/' + $routeParams.name + '/topics'
+      }).
+      success(function (data, status, headers, config) {
+        $scope.totalItems = data.result.length;
+        $scope.topics = data.result;
+        $scope.loading = false;
+      }).
+      error(function (data, status, headers, config) {
+        $scope.name = 'Error!'
+        $scope.loading = false;
+      });
+    };
+
+    $scope.fetchResults();
+  }).
+  controller('PotentialTopicsCtrl', function ($scope, $http, $routeParams) {
+    $scope.totalItems = 0;
+
+    $scope.fetchResults = function() {
+      $scope.loading = true;
+      $http({
+        method: 'GET',
+        url: '/api/user/' + $routeParams.name + '/potentialTopics'
+      }).
+      success(function (data, status, headers, config) {
+        $scope.topics = data.result;
+        $scope.totalItems = data.result.length;
+        $scope.loading = false;
+      }).
+      error(function (data, status, headers, config) {
+        $scope.name = 'Error!'
+        $scope.totalItems = 0;
+        $scope.loading = false;
+      });
+    };
+
+    $scope.fetchResults();
+  }).
+  controller('TopicCtrl', function ($scope, $http, $routeParams) {
+    $scope.fetchResults = function() {
+      $scope.topicLoading = true;
+
+      $http({
+        method: 'GET',
+        url: '/api/topic/' + $routeParams.topic
+      }).
+      success(function (data, status, headers, config) {
+        $scope.topic = data.result;
+        $scope.topicLoading = false;
+      }).
+      error(function (data, status, headers, config) {
+        $scope.name = 'Error!'
+        $scope.topicLoading = false;
+      });
+
+      $scope.adsLoading = true;
+      $http({
+        method: 'GET',
+        url: '/api/topic/' + $routeParams.topic + '/ads'
+      }).
+      success(function (data, status, headers, config) {
+        $scope.ads = data.result.ads;
+        $scope.adsLoading = false;
+      }).
+      error(function (data, status, headers, config) {
+        $scope.name = 'Error!';
+        $scope.adsLoading = false;
+      });
+    };
+    $scope.fetchResults();
   });

@@ -5,14 +5,13 @@ neodb = new neo4j.GraphDatabase(config.neo4j_connection)
 
 module.exports.getUsersForTopic = (topic, callback) ->
 	query = """
-	START u=node(*)
-	MATCH (t)<-[:tweets]-(u)
-	WHERE HAS (t.text) AND t.text =~ {topic}
+	MATCH (h:Hashtag)<-[:has_hashtag]-(t:Tweet)<-[:tweets]-(u:User)
+	WHERE HAS (h.text) AND h.text = {topic}
 	RETURN u.screen_name as screen_name, count(*) as count
 	ORDER BY count DESCENDING;
 	"""
 
-	neodb.query(query, {topic: '.*' + topic + '.*'}, callback)
+	neodb.query(query, {topic: topic}, callback)
 
 module.exports.getTopics = (screen_name, skip, limit, callback) ->
 	query = """

@@ -1,0 +1,15 @@
+div(ng-controller='PotentialTopicsCtrl')
+	h2 Potential Topics
+
+	div(class="text-center")
+		div(ng-show="loading" class="loading")
+			div(class="label label-info") Loading..
+
+	div(ng-show="totalItems <= 0 && !loading" class="panel panel-default")
+		div(class="panel-body")	No topics found
+
+	ul(class="list-group")
+		li(class="list-group-item", ng-repeat='topic in topics')
+			a(href="/topics/{{topic.topic}}") {{topic.topic}}
+			span(class="badge")
+				{{topic.count}}

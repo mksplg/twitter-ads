@@ -29,6 +29,10 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/user',
       controller: 'UserCtrl'
     }).
+    when('/user/:name/topics', {
+      templateUrl: 'partials/topics',
+      controller: 'TopicsCtrl'
+    }).
     when('/topics/:topic', {
       templateUrl: 'partials/topic',
       controller: 'TopicCtrl'

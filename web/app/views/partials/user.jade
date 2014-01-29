@@ -6,12 +6,6 @@ div(ng-controller='UserCtrl')
 			h1 {{user.screen_name}}
 			p {{user.description}}
 
-	ul(class="list-group")
-		li(class="list-group-item", ng-repeat='topic in topics')
-			a(href="/topics/{{topic.topic}}") {{topic.topic}}
-			span(class="badge")
-				{{topic.count}}
-
 	table(class="table")
 		colgroup
 			col(class="col-xs-1")
@@ -37,3 +31,6 @@ div(ng-controller='UserCtrl')
 		tr
 			td Favorites
 			td {{user.favourites_count}}
+
+	include topics
+	include potentialTopics
