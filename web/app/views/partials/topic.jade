@@ -15,6 +15,9 @@ div(ng-controller='TopicCtrl')
 	div(class="text-center")
 		div(ng-show="adsLoading" class="loading")
 			div(class="label label-info") Loading..
-	div(ng-show="ad.content !loading" class="panel panel-default")
+	div(ng-show="ads.length == 0 && !loading" class="panel panel-default")
 		div(class="panel-body")	No ads found
-	div(ng-repeat="ad in ads", ng-bind-html="ad.content")
+	ul(class="list-group")
+		li(class="list-group-item", ng-repeat="ad in ads")
+			div(ng-bind-html="ad.content")
+	
