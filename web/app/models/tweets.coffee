@@ -42,14 +42,28 @@ module.exports.getInfluential = (sortOrder, skip, limit, retweetWeight, favorite
 	WHERE left(t.text, 4)<>'RT @'
 	WITH u as user, SUM(t.retweet_count)/count(t) as tweets_retweet_mean, SUM(t.favorite_count)/count(t) as tweets_favorite_mean, tweets_retweet_mean_max, tweets_favorite_mean_max, followers_count_max, listed_count_max
 	RETURN user, tweets_retweet_mean, tweets_favorite_mean,
-	(({retweet_weight}*tweets_retweet_mean)/tweets_retweet_mean_max + ({favorites_weight}*tweets_favorite_mean)/tweets_favorite_mean_max + ({followers_weight}*user.followers_count)/followers_count_max + ({listed_weight}*user.listed_count)/listed_count_max) AS influence_factor
+	((1.0*{retweet_weight}*tweets_retweet_mean)/tweets_retweet_mean_max + (1.0*{favorites_weight}*tweets_favorite_mean)/tweets_favorite_mean_max + (1.0*{followers_weight}*user.followers_count)/followers_count_max + (1.0*{listed_weight}*user.listed_count)/listed_count_max) AS influence_factor
 	ORDER BY influence_factor
 	"""
 
 	query += ' DESC' unless sortOrder == 'ASC' 
 	query += ' SKIP {skip} LIMIT {limit}'
 
-	neodb.query(query, {skip: parseInt(skip) || 0, limit: parseInt(limit) || 20, retweet_weight: parseFloat(retweetWeight) || 0.3, favorites_weight: parseFloat(favoritesWeight) || 0.3, followers_weight: parseFloat(followersWeight) || 0.3, listed_weight: parseFloat(listedWeight) || 0.3}, callback)
+	params = {
+		skip: parseInt(skip) || 0,
+		limit: parseInt(limit) || 20,
+		retweet_weight: parseFloat(retweetWeight),
+		favorites_weight: parseFloat(favoritesWeight),
+		followers_weight: parseFloat(followersWeight),
+		listed_weight: parseFloat(listedWeight)
+	}
+
+	params.retweet_weight = 0.3 if not params.retweet_weight?
+	params.favorites_weight = 0.3 if not params.favorites_weight?
+	params.followers_weight = 0.3 if not params.followers_weight?
+	params.listed_weight = 0.1 if not params.listed_weight?
+
+	neodb.query(query, params, callback)
 
 module.exports.getFocused = (sortOrder, skip, limit, callback) ->
 	query = """
