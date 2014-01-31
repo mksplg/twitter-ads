@@ -58,10 +58,14 @@ module.exports.getInfluential = (sortOrder, skip, limit, retweetWeight, favorite
 		listed_weight: parseFloat(listedWeight)
 	}
 
-	params.retweet_weight = 0.3 if not params.retweet_weight?
-	params.favorites_weight = 0.3 if not params.favorites_weight?
-	params.followers_weight = 0.3 if not params.followers_weight?
-	params.listed_weight = 0.1 if not params.listed_weight?
+	console.log(params)
+
+	params.retweet_weight = 0.3 if not params.retweet_weight? || isNaN(params.retweet_weight)
+	params.favorites_weight = 0.3 if not params.favorites_weight? || isNaN(params.favorites_weight)
+	params.followers_weight = 0.3 if not params.followers_weight? || isNaN(params.followers_weight)
+	params.listed_weight = 0.1 if not params.listed_weight? || isNaN(params.listed_weight)
+
+	console.log(params)
 
 	neodb.query(query, params, callback)
 
